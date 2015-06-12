@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         glwidget.cpp \
-    dummydata.cpp
+    dummydata.cpp \
+    plygoncontainer.cpp \
+    mainstage.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
-    dummydata.h
+    dummydata.h \
+    plygoncontainer.h \
+    mainstage.h
 
 INCLUDEPATH +=   /usr/include/
 LIBS        += -L/usr/include/
@@ -29,4 +33,5 @@ LIBS        += -lmpfr
 LIBS        += -lglut
 QMAKE_CXXFLAGS += -frounding-math -O3
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    plygoncontainer.ui

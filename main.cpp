@@ -2,6 +2,8 @@
 #include <QtGui>
 #include <GL/glut.h>
 #include <QApplication>
+#include "container.h"
+#include "plygoncontainer.h"
 
 
 void renderFunction()
@@ -42,7 +44,8 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
     QApplication a(argc, argv);
     MainWindow w;
-    //renderFunction();
+    //PlygonContainer w;
+    //w.draw();
     w.show();
 
     return a.exec();

@@ -1,6 +1,9 @@
 #include "glwidget.h"
 #include <iostream>
 #include <GL/glut.h>
+#include <QList>
+#include <QPoint>
+#include <dummydata.h>
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
 }
@@ -12,40 +15,39 @@ void GLWidget::initiallizeGL(){
 
 void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
-    std::cout << "Printing..." << std::endl;
-    std::cout << size().height() << std::endl;
-    std::cout << size().width() << std::endl;
+    //std::cout << "Printing..." << std::endl;
+    //std::cout << size().height() << std::endl;
+    //std::cout << size().width() << std::endl;
 
     double width = size().width();
     double height = size().height();
 
     //glutWireTeapot(0.6);
-    glBegin(GL_LINE_LOOP);
-        glColor3f(1, 0, 0);
-        //glVertex3f(-0.5, -0.5, 0);
-        //glColor3f(0, 1, 0);
-        //glVertex3f( 0.5, -0.5, 0);
-        //glColor3f(0, 0, 1);
-        //glVertex3f( 0, 0.5, 0);
-    //glVertex2f( .9,  0);
-    //glVertex2i( -1,  0);
-    glVertex2f( 0,  0);
-    glVertex2f( 0,  .5);
-    glVertex2f( .05,  0.7);
-    glVertex2f( 0.07,  0.6);
-    glVertex2f( 0.5,  0.05);
-    glVertex2f( .9,  .5);
-    glEnd();
-
-    glBegin(GL_LINE_LOOP);
     glColor3f(1, 0, 0);
-    glVertex2f( -750,  -550);
-    glVertex2f( 0,  .5);
-    glVertex2f( .05,  0.7);
-    glVertex2f( 0.07,  0.6);
-    glVertex2f( 0.5,  0.05);
-    glVertex2f( .9,  .5);
-    glEnd();
+
+    QList< QList<QPoint> >::iterator polygonIterator;
+    QList< QList<QPoint> > polygons = DummyData().getPolygons();
+    for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
+        glBegin(GL_LINE_LOOP);
+        QList<QPoint>::iterator vertexIterator;
+        for ( vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+            QPoint vertex = *vertexIterator;
+            glVertex2d(transformX(vertex.x(), width), transformY(vertex.y(), height));
+        }
+        glEnd();
+    }
+}
+
+double GLWidget::transformX(int x, int width) {
+    double transformed = (x * 1.0 - width)/width;
+    transformed = x * 1.0 / width;
+    return transformed * 2 - 1;
+}
+
+double GLWidget::transformY(int y, int height) {
+    double transformed = (y * 1.0 - height)/height;
+    transformed = y * 1.0 / height;
+    return transformed * 2 - 1;
 }
 
 void GLWidget::resizeGL(int w, int h) {
