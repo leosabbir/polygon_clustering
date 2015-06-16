@@ -17,13 +17,15 @@ SOURCES += main.cpp\
         glwidget.cpp \
     dummydata.cpp \
     plygoncontainer.cpp \
-    mainstage.cpp
+    mainstage.cpp \
+    polytopedistance.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
     dummydata.h \
     plygoncontainer.h \
-    mainstage.h
+    mainstage.h \
+    polytopedistance.h
 
 INCLUDEPATH +=   /usr/include/
 LIBS        += -L/usr/include/
