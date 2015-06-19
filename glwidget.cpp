@@ -4,6 +4,7 @@
 #include <QList>
 #include <QPoint>
 #include <dummydata.h>
+#include "inputfilereader.h"
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
 }
@@ -15,7 +16,7 @@ void GLWidget::initiallizeGL(){
 
 void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
-    //std::cout << "Printing..." << std::endl;
+    std::cout << "Painting..." << std::endl;
     //std::cout << size().height() << std::endl;
     //std::cout << size().width() << std::endl;
 
@@ -26,7 +27,9 @@ void GLWidget::paintGL() {
     glColor3f(1, 0, 0);
 
     QList< QList<QPoint> >::iterator polygonIterator;
-    QList< QList<QPoint> > polygons = DummyData().getPolygons();
+    InputFileReader fileReader;
+    fileReader.constructPolygons();
+    QList< QList<QPoint> > polygons = fileReader.getUiPolygons();//DummyData().getPolygons();
     for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
         glBegin(GL_LINE_LOOP);
         QList<QPoint>::iterator vertexIterator;

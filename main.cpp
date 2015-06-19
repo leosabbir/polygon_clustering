@@ -4,7 +4,7 @@
 #include <QApplication>
 #include "plygoncontainer.h"
 #include "polytopedistance.h"
-
+#include "inputfilereader.h"
 //#include <CGAL/Cartesian.h>
 //#include <CGAL/Polygon_2.h>
 //#include <CGAL/point_generators_2.h>
@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 
     glutInit(&argc, argv);
     QApplication a(argc, argv);
+
     MainWindow w;
     //PlygonContainer w;
     //w.draw();

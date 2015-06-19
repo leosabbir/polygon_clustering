@@ -18,14 +18,26 @@ SOURCES += main.cpp\
     dummydata.cpp \
     plygoncontainer.cpp \
     mainstage.cpp \
-    polytopedistance.cpp
+    polytopedistance.cpp \
+    custompoint.cpp \
+    customeline.cpp \
+    custompolygon.cpp \
+    polygoncomputationutil.cpp \
+    polygonindexlinepair.cpp \
+    inputfilereader.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
     dummydata.h \
     plygoncontainer.h \
     mainstage.h \
-    polytopedistance.h
+    polytopedistance.h \
+    custompoint.h \
+    customeline.h \
+    custompolygon.h \
+    polygoncomputationutil.h \
+    polygonindexlinepair.h \
+    inputfilereader.h
 
 INCLUDEPATH +=   /usr/include/
 LIBS        += -L/usr/include/
@@ -37,3 +49,6 @@ QMAKE_CXXFLAGS += -frounding-math -O3
 
 FORMS    += mainwindow.ui \
     plygoncontainer.ui
+
+RESOURCES += \
+    resources/resources.qrc
