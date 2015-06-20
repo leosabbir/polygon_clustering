@@ -4,7 +4,7 @@
 #include <QApplication>
 #include "plygoncontainer.h"
 #include "polytopedistance.h"
-#include "inputfilereader.h"
+//#include "inputfilereader.h"
 //#include <CGAL/Cartesian.h>
 //#include <CGAL/Polygon_2.h>
 //#include <CGAL/point_generators_2.h>

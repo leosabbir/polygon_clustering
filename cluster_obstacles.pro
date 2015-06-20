@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     custompolygon.cpp \
     polygoncomputationutil.cpp \
     polygonindexlinepair.cpp \
-    inputfilereader.cpp
+    inputfilereader.cpp \
+    context.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     custompolygon.h \
     polygoncomputationutil.h \
     polygonindexlinepair.h \
-    inputfilereader.h
+    inputfilereader.h \
+    context.h
 
 INCLUDEPATH +=   /usr/include/
 LIBS        += -L/usr/include/

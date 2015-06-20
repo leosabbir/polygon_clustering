@@ -14,7 +14,7 @@ public:
 
 
 private:
-    const  QString INPUTFILEPATH = ":/resources/input.txt";
+    static const  QString INPUTFILEPATH;
     QFile *file;
     QList<QList<QPoint> > uiPolygons;
 };

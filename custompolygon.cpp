@@ -1,5 +1,6 @@
 #include "custompolygon.h"
 #include "CGAL/Polygon_set_2.h"
+#include <iostream>
 
 typedef CGAL::Polygon_set_2<K, std::vector<Point> > Polygon_set_2;
 typedef Polygon::Vertex_iterator Vertex_iterator;
@@ -19,13 +20,19 @@ bool CustomPolygon::hasConnectingPolygons() {
 
 CustomPoint* CustomPolygon::getVertices() const {
     int i = 0;
-    CustomPoint* vertices;
+    //std::cout << this->size() << std::endl;
+    CustomPoint* vertices = static_cast<CustomPoint*>(::operator new[](sizeof(CustomPoint) * this->size()));
+    //CustomPoint* vertices = new CustomPoint[this->size()];
+    //Object2* objArray = static_cast<Object2*>( ::operator new ( sizeof Object2 * NUM_OF_OBJS ) );
+    //vertices = new CustomPoint[this->size()];
     for (Vertex_iterator iter = this->vertices_begin(); iter != this->vertices_end(); iter++) {
-        CustomPoint vertex(CGAL::to_double((*iter).x()), CGAL::to_double((*iter).y()));
-        vertices[i] = vertex;
+        //CustomPoint vertex(CGAL::to_double((*iter).x()), CGAL::to_double((*iter).y()));
+        //std::cout << CGAL::to_double((*iter).x()) << ", " << CGAL::to_double((*iter).y());
+        new(&vertices[i]) CustomPoint(CGAL::to_double((*iter).x()), CGAL::to_double((*iter).y()));
+        //vertices[i] = *(new CustomPoint(CGAL::to_double((*iter).x()), CGAL::to_double((*iter).y())));
         i++;
     }
-
+    std::cout << std::endl;
     return vertices;
 }
 
@@ -35,11 +42,19 @@ CustomeLine CustomPolygon::computeDistance(CustomPolygon p) const {
     CustomPoint *pointPs = this->getVertices();
     CustomPoint *pointQs = p.getVertices();
 
-    Polytope_distance pd(pointPs, pointPs + sizeof(pointPs)/sizeof(*pointPs), pointQs, pointQs + sizeof(pointQs)/sizeof(*pointQs));
+    //TODO create your own array here
+    for(int i = 1; i <= 2; i++) {
+        //std::cout << "Dummy Print: " <<  i << "-> " << pointPs[i].x() << ", " << pointPs[i].y() << " : ";
+        //std::cout << sizeof(pointPs)/sizeof(*pointPs) << std::endl;
+    }
+
+    //Polytope_distance pd(pointPs, pointPs + sizeof(pointPs)/sizeof(*pointPs), pointQs, pointQs + sizeof(pointQs)/sizeof(*pointQs));
+    Polytope_distance pd(pointPs, pointPs + this->size(), pointQs, pointQs + p.size());
     assert (pd.is_valid());
 
     double distance = CGAL::to_double (pd.squared_distance_numerator()) /
       CGAL::to_double (pd.squared_distance_denominator());
+    std::cout << "Distance: " << distance << std::endl;
 
     // get points that realize the distance
     Polytope_distance::Coordinate_iterator  coord_it;
@@ -56,7 +71,8 @@ CustomeLine CustomPolygon::computeDistance(CustomPolygon p) const {
         } else {
             CGAL::MP_Float factor = *coord_it;
             std::cout << "p: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) << std::endl;
-            *pointP = Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
+            pointP = new Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
+            break;
         }
         i++;
     }
@@ -73,7 +89,8 @@ CustomeLine CustomPolygon::computeDistance(CustomPolygon p) const {
         } else {
             CGAL::MP_Float factor = *coord_it;
             std::cout << "q: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) <<std::endl;
-            *pointQ = Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
+            pointQ = new Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
+            break;
         }
         i++;
     }

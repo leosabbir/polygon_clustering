@@ -14,6 +14,7 @@ typedef CGAL::MP_Float ET;
 
 typedef CGAL::Homogeneous<ET> K;
 typedef CGAL::Polygon_2<K> Polygon;
+typedef CGAL::Point_2<K> Point;
 
 typedef CGAL::Polytope_distance_d_traits_2<K> Traits;
 typedef CGAL::Polytope_distance_d<Traits>     Polytope_distance;

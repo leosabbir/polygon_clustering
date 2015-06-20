@@ -1,6 +1,8 @@
 #include "inputfilereader.h"
 #include <istream>
 
+const QString InputFileReader::INPUTFILEPATH = ":/resources/input.txt";
+
 InputFileReader::InputFileReader()
 {
     //QDir::setCurrent("/home/laxmi/Documents/sabbirThesis/cluster_obstacles/");
@@ -12,7 +14,8 @@ InputFileReader::InputFileReader()
 }
 
 QList<CustomPolygon> InputFileReader::constructPolygons() {
-    QList<CustomPolygon> polygons;
+    QList<CustomPolygon> *polygons;
+    polygons = new QList<CustomPolygon>();
     if (file->open(QIODevice::ReadOnly)) {
        QTextStream in(file);
        while (!in.atEnd())
@@ -22,7 +25,9 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
           int i = 1;
           double x,y;
           QList<QPoint> *polygon;
+          CustomPolygon *cgalPolygon;
           polygon = new QList<QPoint>();
+          cgalPolygon = new CustomPolygon();
           for ( QStringList::Iterator iter = coordinates.begin(); iter != coordinates.end(); ++iter ) {
               QString strValue = *iter;
 
@@ -35,11 +40,13 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
                   i = 1;
                   y = strValue.toDouble();
                   *polygon << QPoint(x, y);
+                  cgalPolygon->push_back(*(new Point(x, y)));
                   break;
               }
               std::cout << " " << strValue.toDouble(); //<< strValue.toUtf8().constData();
           }
           this->uiPolygons << *polygon;
+          polygons->append(*cgalPolygon);
           std::cout << std::endl;
        }
        file->close();
@@ -47,7 +54,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
         std::cout << "file could not be read" << std::endl;
     }
 
-    return polygons;
+    return *polygons;
 }
 
 QList<QList<QPoint> > InputFileReader::getUiPolygons() {
