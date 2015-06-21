@@ -21,6 +21,9 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
        while (!in.atEnd())
        {
           QString line = in.readLine();
+          if (line.startsWith("//") || line.isEmpty()) {
+              continue;
+          }
           QStringList coordinates = line.split(" ");
           int i = 1;
           double x,y;
