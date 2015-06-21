@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
 //                                       Oiterator(std::cout));
 //        std::cout << std::endl;
 
-    PolytopeDistance pp;
-    pp.computeDistance();
+//    PolytopeDistance pp;
+//    pp.computeDistance();
 
     glutInit(&argc, argv);
     QApplication a(argc, argv);

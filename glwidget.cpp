@@ -29,8 +29,8 @@ void GLWidget::paintGL() {
 
     QList< QList<QPoint> >::iterator polygonIterator;
 //    InputFileReader fileReader;
-//    fileReader.constructPolygons();
-    QList< QList<QPoint> > polygons = Context::getInstance().getFileReader().getUiPolygons();//DummyData().getPolygons();
+//    fileReader.constructPolygons();Context
+    QList< QList<QPoint> > polygons = Context::getInstance()->getFileReader().getUiPolygons();//DummyData().getPolygons();
     for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
         glBegin(GL_LINE_LOOP);
         QList<QPoint>::iterator vertexIterator;

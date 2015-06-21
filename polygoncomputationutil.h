@@ -15,7 +15,7 @@ public:
     PolygonComputationUtil();
     //CustomeLine computeDistance(CustomPolygon p1, CustomPolygon p2);
     //bool doIntersect(CustomPolygon polygon, CustomPolygon line);
-    QList<CustomeLine> computeAllOptimumDistances(QList<CustomPolygon> polygons, double threshold);
+    QList<CustomeLine>* computeAllOptimumDistances(QList<CustomPolygon> polygons, double threshold);
 };
 
 #endif // POLYGONCOMPUTATIONUTIL_H

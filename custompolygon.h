@@ -26,7 +26,7 @@ public:
     CustomPolygon();
     void addConnectingPolygon(int polygonIndex, CustomeLine line);
     bool hasConnectingPolygons();
-    CustomeLine computeDistance(CustomPolygon p) const;
+    CustomeLine* computeDistance(CustomPolygon p) const;
     bool doIntersect(CustomPolygon p) const;
     CustomPoint* getVertices() const;
 

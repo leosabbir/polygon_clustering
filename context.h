@@ -7,13 +7,15 @@
 class Context
 {
 public:
-    static Context getInstance();
+    static Context* getInstance();
     InputFileReader getFileReader();
+    QList<CustomeLine> getConnectingLines();
 
 
 private:
     Context();
     static Context *context;
+    QList<CustomeLine> *connectingLines;
     InputFileReader *fileReader;
     PolygonComputationUtil *polygonComputationUtil;
 };

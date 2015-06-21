@@ -36,7 +36,7 @@ CustomPoint* CustomPolygon::getVertices() const {
     return vertices;
 }
 
-CustomeLine CustomPolygon::computeDistance(CustomPolygon p) const {
+CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
     Point *pointP, *pointQ;
 
     CustomPoint *pointPs = this->getVertices();
@@ -94,7 +94,7 @@ CustomeLine CustomPolygon::computeDistance(CustomPolygon p) const {
         }
         i++;
     }
-    return CustomeLine(*pointP, *pointQ, distance);
+    return new CustomeLine(*pointP, *pointQ, distance);
 }
 
 bool CustomPolygon::doIntersect(CustomPolygon p) const {
