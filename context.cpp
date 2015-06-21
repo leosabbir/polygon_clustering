@@ -9,7 +9,7 @@ Context::Context()
     //this->fileReader->constructPolygons();
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
-    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
+    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 50000.0);
 
 }
 

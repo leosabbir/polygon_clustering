@@ -13,17 +13,22 @@ QList<CustomeLine>* PolygonComputationUtil::computeAllOptimumDistances(QList<Cus
             CustomeLine *connectingLine = polygons.at(i).computeDistance(polygons.at(j));
             //connectingLine = polygons->at(i).computeDistance(polygons->at(j));
             if ( connectingLine->getDistance() <= threshold ) {
+                bool intersects = false;
                 for (int k = 0; k < polygons.size(); k++) {
                     if ( i != k && j != k) {
-                        CustomPolygon p;
-                        p.push_back(connectingLine->getP());
-                        p.push_back(connectingLine->getQ());
-                        if (!polygons.at(k).doIntersect(p)) {
+                        CustomPolygon *p = new CustomPolygon();
+                        p->push_back(connectingLine->getP());
+                        p->push_back(connectingLine->getQ());
+                        if (polygons.at(k).doIntersect(*p)) {
                             //polygons->at(i).addConnectingPolygon(j, connectingLine);
                             //polygons->at(j).addConnectingPolygon(i, connectingLine);
-                            connectingLines->append(*connectingLine);
+                            intersects = true;
+                            break;
                         }
                     }
+                }
+                if ( !intersects ) {
+                    connectingLines->append(*connectingLine);
                 }
             }
         }

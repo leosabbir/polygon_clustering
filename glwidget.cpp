@@ -6,6 +6,7 @@
 #include <dummydata.h>
 #include "inputfilereader.h"
 #include "context.h"
+#include "customeline.h"
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
 }
@@ -40,15 +41,34 @@ void GLWidget::paintGL() {
         }
         glEnd();
     }
+
+    glColor3f(0, 1, 0);
+    QList<CustomeLine>::iterator linesIterator;
+    QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
+    std::cout << connectingLines.size() << " lines in the list" << std::endl;
+    for (linesIterator = connectingLines.begin(); linesIterator != connectingLines.end(); linesIterator++) {
+        glBegin(GL_LINE_LOOP);
+            CustomeLine line = *linesIterator;
+            double x = CGAL::to_double(line.getQ().x());
+            double y = CGAL::to_double(line.getQ().y());
+            std::cout << "Drawing line for " << x << "," << y << std::endl;
+            glVertex2d(transformX(x, width), transformY(y, height));
+
+            x = CGAL::to_double(line.getP().x());
+            y = CGAL::to_double(line.getP().y());
+            std::cout << "Drawing line for " << x << "," << y << std::endl;
+            glVertex2d(transformX(x, width), transformY(y, height));
+        glEnd();
+    }
 }
 
-double GLWidget::transformX(int x, int width) {
+double GLWidget::transformX(double x, double width) {
     double transformed = (x * 1.0 - width)/width;
     transformed = x * 1.0 / width;
     return transformed * 2 - 1;
 }
 
-double GLWidget::transformY(int y, int height) {
+double GLWidget::transformY(double y, double height) {
     double transformed = (y * 1.0 - height)/height;
     transformed = y * 1.0 / height;
     return transformed * 2 - 1;

@@ -42,12 +42,6 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
     CustomPoint *pointPs = this->getVertices();
     CustomPoint *pointQs = p.getVertices();
 
-    //TODO create your own array here
-    for(int i = 1; i <= 2; i++) {
-        //std::cout << "Dummy Print: " <<  i << "-> " << pointPs[i].x() << ", " << pointPs[i].y() << " : ";
-        //std::cout << sizeof(pointPs)/sizeof(*pointPs) << std::endl;
-    }
-
     //Polytope_distance pd(pointPs, pointPs + sizeof(pointPs)/sizeof(*pointPs), pointQs, pointQs + sizeof(pointQs)/sizeof(*pointQs));
     Polytope_distance pd(pointPs, pointPs + this->size(), pointQs, pointQs + p.size());
     assert (pd.is_valid());
@@ -98,9 +92,10 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
 }
 
 bool CustomPolygon::doIntersect(CustomPolygon p) const {
-    Polygon_set_2 ps;
-    ps.insert(*this);
+//    Polygon_set_2 ps;
+//    ps.insert(*this);
 
-    return ps.do_intersect(p);
+//    return ps.do_intersect(p);
+    return false;
 }
 
