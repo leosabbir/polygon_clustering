@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     polygoncomputationutil.cpp \
     polygonindexlinepair.cpp \
     inputfilereader.cpp \
-    context.cpp
+    context.cpp \
+    polygonsintersectionfinder.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -39,14 +40,18 @@ HEADERS  += mainwindow.h \
     polygoncomputationutil.h \
     polygonindexlinepair.h \
     inputfilereader.h \
-    context.h
+    context.h \
+    polygonsintersectionfinder.h
 
-INCLUDEPATH +=   /usr/include/
-LIBS        += -L/usr/include/
+INCLUDEPATH +=   /usr/local/include/
+LIBS        += -L/usr/local/include/
 LIBS        += -lCGAL
 LIBS        += -lgmp
 LIBS        += -lmpfr
 LIBS        += -lglut
+LIBS        += -DBOOST_LOG_DYN_LINK
+LIBS        += -lboost_thread
+LIBS        += -lpthread
 QMAKE_CXXFLAGS += -frounding-math -O3
 
 FORMS    += mainwindow.ui \

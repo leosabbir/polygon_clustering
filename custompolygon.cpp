@@ -1,7 +1,12 @@
 #include "custompolygon.h"
 #include "CGAL/Polygon_set_2.h"
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 #include <iostream>
+#include "polygonsintersectionfinder.h"
 
+typedef CGAL::Exact_predicates_exact_constructions_kernel Kernel;
+typedef Kernel::Point_2                                   Point_2;
+typedef CGAL::Polygon_2<Kernel>                           Polygon_2;
 typedef CGAL::Polygon_set_2<K, std::vector<Point> > Polygon_set_2;
 typedef Polygon::Vertex_iterator Vertex_iterator;
 
@@ -92,10 +97,12 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
 }
 
 bool CustomPolygon::doIntersect(CustomPolygon p) const {
-//    Polygon_set_2 ps;
-//    ps.insert(*this);
+    Polygon_set_2 ps;
+    //ps->insert(*this);
 
-//    return ps.do_intersect(p);
-    return false;
+    //return ps.do_intersect(p);
+    PolygonsIntersectionFinder i;
+    return i.doIntersect(*this, p);
+    //return false;
 }
 
