@@ -1,4 +1,5 @@
 #include "context.h"
+#include <iostream>
 
 Context *(Context::context) = NULL;
 
@@ -9,8 +10,7 @@ Context::Context()
     //this->fileReader->constructPolygons();
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
-    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 15000.0);
-
+    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 1000.0);
 }
 
 Context* Context::getInstance() {
@@ -26,5 +26,10 @@ InputFileReader Context::getFileReader() {
 
 QList<CustomeLine> Context::getConnectingLines() {
     return *(this->connectingLines);
+}
+
+void Context::reComputeConnectingLines(int threshold) {
+    std::cout << "recomputing" << std::endl;
+    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold^2);
 }
 

@@ -18,8 +18,14 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    //RenderArea *renderArea;
     ~MainWindow();
+
+private slots:
+    void on_thresholdSlider_sliderMoved(int position);
+
+    void on_thresholdSlider_valueChanged(int value);
+
+    void on_applyBtn_released();
 
 private:
     Ui::MainWindow *ui;

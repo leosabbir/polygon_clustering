@@ -10,6 +10,7 @@ public:
     static Context* getInstance();
     InputFileReader getFileReader();
     QList<CustomeLine> getConnectingLines();
+    void reComputeConnectingLines(int threshold);
 
 
 private:

@@ -53,7 +53,7 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
 
     double distance = CGAL::to_double (pd.squared_distance_numerator()) /
       CGAL::to_double (pd.squared_distance_denominator());
-    std::cout << "Distance: " << distance << std::endl;
+    //std::cout << "Distance: " << distance << std::endl;
 
     // get points that realize the distance
     Polytope_distance::Coordinate_iterator  coord_it;
@@ -69,7 +69,7 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
             y = *coord_it;
         } else {
             CGAL::MP_Float factor = *coord_it;
-            std::cout << "p: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) << std::endl;
+            //std::cout << "p: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) << std::endl;
             pointP = new Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
             break;
         }
@@ -87,7 +87,7 @@ CustomeLine* CustomPolygon::computeDistance(CustomPolygon p) const {
             y = *coord_it;
         } else {
             CGAL::MP_Float factor = *coord_it;
-            std::cout << "q: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) <<std::endl;
+            //std::cout << "q: " << CGAL::to_double(x)/CGAL::to_double(factor) << ", " << CGAL::to_double(y)/CGAL::to_double(factor) <<std::endl;
             pointQ = new Point(CGAL::to_double(x)/CGAL::to_double(factor), CGAL::to_double(y)/CGAL::to_double(factor));
             break;
         }

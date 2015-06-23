@@ -51,12 +51,12 @@ void GLWidget::paintGL() {
             CustomeLine line = *linesIterator;
             double x = CGAL::to_double(line.getQ().x());
             double y = CGAL::to_double(line.getQ().y());
-            std::cout << "Drawing line for " << x << "," << y << std::endl;
+            //std::cout << "Drawing line for " << x << "," << y << std::endl;
             glVertex2d(transformX(x, width), transformY(y, height));
 
             x = CGAL::to_double(line.getP().x());
             y = CGAL::to_double(line.getP().y());
-            std::cout << "Drawing line for " << x << "," << y << std::endl;
+            //std::cout << "Drawing line for " << x << "," << y << std::endl;
             glVertex2d(transformX(x, width), transformY(y, height));
         glEnd();
     }
