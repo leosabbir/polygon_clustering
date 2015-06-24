@@ -16,6 +16,7 @@ public:
 private:
     static const  QString INPUTFILEPATH;
     QFile *file;
+    QList<CustomPolygon> *polygonsFromFile;
     QList<QList<QPoint> > uiPolygons;
 };
 

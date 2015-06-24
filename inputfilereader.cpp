@@ -10,12 +10,15 @@ InputFileReader::InputFileReader()
     //QDir::setCurrent(QCoreApplication::applicationDirPath());
     //std::cout << QDir::currentPath().toUtf8().constData() << std::endl;
     file = new QFile(this->INPUTFILEPATH);
+    this->polygonsFromFile = NULL;
     //file->setFileName(this->INPUTFILEPATH);
 }
 
 QList<CustomPolygon> InputFileReader::constructPolygons() {
-    QList<CustomPolygon> *polygons;
-    polygons = new QList<CustomPolygon>();
+    if ( (this->polygonsFromFile) != NULL ) {
+        return *(this->polygonsFromFile);
+    }
+    this->polygonsFromFile = new QList<CustomPolygon>();
     if (file->open(QIODevice::ReadOnly)) {
        QTextStream in(file);
        while (!in.atEnd())
@@ -52,7 +55,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
           if (cgalPolygon->is_clockwise_oriented()) {
               cgalPolygon->reverse_orientation();
           }
-          polygons->append(*cgalPolygon);
+          polygonsFromFile->append(*cgalPolygon);
           //std::cout << std::endl;
        }
        file->close();
@@ -60,7 +63,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
         std::cout << "file could not be read" << std::endl;
     }
 
-    return *polygons;
+    return *(this->polygonsFromFile);
 }
 
 QList<QList<QPoint> > InputFileReader::getUiPolygons() {
