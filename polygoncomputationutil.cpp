@@ -12,7 +12,7 @@ QList<CustomeLine>* PolygonComputationUtil::computeAllOptimumDistances(QList<Cus
         for ( int j = i+1; j < polygons.size(); j++) {
             CustomeLine *connectingLine = polygons.at(i).computeDistance(polygons.at(j));
             //connectingLine = polygons->at(i).computeDistance(polygons->at(j));
-            if ( connectingLine->getDistance() <= threshold ) {
+            if ( connectingLine->getDistance() <= threshold * threshold ) {
                 bool intersects = false;
                 for (int k = 0; k < polygons.size(); k++) {
                     if ( i != k && j != k) {

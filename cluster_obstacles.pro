@@ -16,7 +16,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         glwidget.cpp \
     dummydata.cpp \
-    plygoncontainer.cpp \
     mainstage.cpp \
     polytopedistance.cpp \
     custompoint.cpp \
@@ -26,12 +25,12 @@ SOURCES += main.cpp\
     polygonindexlinepair.cpp \
     inputfilereader.cpp \
     context.cpp \
-    polygonsintersectionfinder.cpp
+    polygonsintersectionfinder.cpp \
+    constants.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
     dummydata.h \
-    plygoncontainer.h \
     mainstage.h \
     polytopedistance.h \
     custompoint.h \
@@ -41,7 +40,8 @@ HEADERS  += mainwindow.h \
     polygonindexlinepair.h \
     inputfilereader.h \
     context.h \
-    polygonsintersectionfinder.h
+    polygonsintersectionfinder.h \
+    constants.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/
@@ -54,8 +54,7 @@ LIBS        += -lboost_thread
 LIBS        += -lpthread
 QMAKE_CXXFLAGS += -frounding-math -O3
 
-FORMS    += mainwindow.ui \
-    plygoncontainer.ui
+FORMS    += mainwindow.ui
 
 RESOURCES += \
     resources/resources.qrc

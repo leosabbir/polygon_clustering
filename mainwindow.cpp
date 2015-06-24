@@ -1,13 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "context.h"
+#include "constants.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    int initialThreshold = 100;
-    ui->thresholdSlider->setValue(initialThreshold);
-    ui->threshHoldLbl->setText(QString::number(initialThreshold));
+    ui->thresholdSlider->setValue(Constants::INITIAL_THRESHOLD);
+    ui->threshHoldLbl->setText(QString::number(Constants::INITIAL_THRESHOLD));
     ui->applyBtn->setEnabled(false);
 }
 
