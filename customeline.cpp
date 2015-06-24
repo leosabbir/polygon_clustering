@@ -20,6 +20,6 @@ Point CustomeLine::getQ() {
     return this -> q;
 }
 
-double CustomeLine::getDistance() {
+double CustomeLine::getSquaredDistance() {
     return this->length;
 }

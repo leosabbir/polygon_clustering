@@ -10,7 +10,7 @@ public:
     CustomeLine(Point p, Point q, double length);
     Point getP();
     Point getQ();
-    double getDistance();
+    double getSquaredDistance();
 
 private:
 
