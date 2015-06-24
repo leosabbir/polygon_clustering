@@ -17,7 +17,7 @@
    <string>Polygon Obstacles</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="GLWidget" name="widget" native="true">
+   <widget class="GLWidget" name="maincontainer" native="true">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -50,13 +50,16 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>50</number>
+     <number>10</number>
     </property>
     <property name="maximum">
-     <number>200</number>
+     <number>500</number>
     </property>
     <property name="singleStep">
      <number>10</number>
+    </property>
+    <property name="sliderPosition">
+     <number>32</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -78,7 +81,7 @@
      </font>
     </property>
     <property name="text">
-     <string>50</string>
+     <string>32</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -106,6 +109,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="applyBtn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>840</x>

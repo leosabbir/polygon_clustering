@@ -10,7 +10,7 @@ Context::Context()
     //this->fileReader->constructPolygons();
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
-    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 1000.0);
+    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 1024.0);
 }
 
 Context* Context::getInstance() {
@@ -30,6 +30,6 @@ QList<CustomeLine> Context::getConnectingLines() {
 
 void Context::reComputeConnectingLines(int threshold) {
     std::cout << "recomputing" << std::endl;
-    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold^2);
+    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold * threshold);
 }
 

@@ -11,6 +11,7 @@ public:
     void initiallizeGL();
     void paintGL();
     void resizeGL(int w, int h);
+    void update();
 
     double transformX(double x, double width);
     double transformY(double y, double height);

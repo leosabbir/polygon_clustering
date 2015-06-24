@@ -46,14 +46,14 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
                   cgalPolygon->push_back(*(new Point(x, y)));
                   break;
               }
-              std::cout << " " << strValue.toDouble(); //<< strValue.toUtf8().constData();
+              //std::cout << " " << strValue.toDouble(); //<< strValue.toUtf8().constData();
           }
           this->uiPolygons << *polygon;
           if (cgalPolygon->is_clockwise_oriented()) {
               cgalPolygon->reverse_orientation();
           }
           polygons->append(*cgalPolygon);
-          std::cout << std::endl;
+          //std::cout << std::endl;
        }
        file->close();
     } else {

@@ -18,7 +18,7 @@ void GLWidget::initiallizeGL(){
 
 void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
-    std::cout << "Painting..." << std::endl;
+    //std::cout << "Painting..." << std::endl;
     //std::cout << size().height() << std::endl;
     //std::cout << size().width() << std::endl;
 
@@ -45,7 +45,7 @@ void GLWidget::paintGL() {
     glColor3f(0, 1, 0);
     QList<CustomeLine>::iterator linesIterator;
     QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
-    std::cout << connectingLines.size() << " lines in the list" << std::endl;
+    //std::cout << connectingLines.size() << " lines in the list" << std::endl;
     for (linesIterator = connectingLines.begin(); linesIterator != connectingLines.end(); linesIterator++) {
         glBegin(GL_LINE_LOOP);
             CustomeLine line = *linesIterator;
@@ -60,6 +60,11 @@ void GLWidget::paintGL() {
             glVertex2d(transformX(x, width), transformY(y, height));
         glEnd();
     }
+
+}
+
+void GLWidget::update() {
+    QWidget::update();
 }
 
 double GLWidget::transformX(double x, double width) {

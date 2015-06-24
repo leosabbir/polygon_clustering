@@ -37,7 +37,7 @@ CustomPoint* CustomPolygon::getVertices() const {
         //vertices[i] = *(new CustomPoint(CGAL::to_double((*iter).x()), CGAL::to_double((*iter).y())));
         i++;
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
     return vertices;
 }
 
