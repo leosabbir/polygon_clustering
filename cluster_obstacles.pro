@@ -16,13 +16,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         glwidget.cpp \
     dummydata.cpp \
-    mainstage.cpp \
     polytopedistance.cpp \
     custompoint.cpp \
     customeline.cpp \
     custompolygon.cpp \
     polygoncomputationutil.cpp \
-    polygonindexlinepair.cpp \
     inputfilereader.cpp \
     context.cpp \
     polygonsintersectionfinder.cpp \
@@ -31,13 +29,11 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
             glwidget.h \
     dummydata.h \
-    mainstage.h \
     polytopedistance.h \
     custompoint.h \
     customeline.h \
     custompolygon.h \
     polygoncomputationutil.h \
-    polygonindexlinepair.h \
     inputfilereader.h \
     context.h \
     polygonsintersectionfinder.h \
