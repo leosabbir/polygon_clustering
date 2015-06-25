@@ -11,6 +11,10 @@
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
 }
 
+//GLWidget::~GLWidget() {
+
+//}
+
 void GLWidget::initiallizeGL(){
     glClearColor(0.2, 0.2, 0.2, 1);
 
@@ -65,6 +69,11 @@ void GLWidget::paintGL() {
 
 void GLWidget::update() {
     QWidget::update();
+}
+
+void GLWidget::mousePressEvent(QMouseEvent *){
+    qDebug() << "mouse pressed";
+    emit hadMousePress();
 }
 
 double GLWidget::transformX(double x, double width) {

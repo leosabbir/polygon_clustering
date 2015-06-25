@@ -27,6 +27,8 @@ private slots:
 
     void on_applyBtn_released();
 
+    void onMouseEvent();
+
 private:
     Ui::MainWindow *ui;
 };

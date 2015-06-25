@@ -2,7 +2,6 @@
 #include <QtGui>
 #include <GL/glut.h>
 #include <QApplication>
-#include "plygoncontainer.h"
 #include "polytopedistance.h"
 //#include "inputfilereader.h"
 //#include <CGAL/Cartesian.h>

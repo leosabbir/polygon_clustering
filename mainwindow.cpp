@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->thresholdSlider->setValue(Constants::INITIAL_THRESHOLD);
     ui->threshHoldLbl->setText(QString::number(Constants::INITIAL_THRESHOLD));
     ui->applyBtn->setEnabled(false);
+
+    connect(ui->maincontainer, SIGNAL(hadMousePress()), this, SLOT(onMouseEvent()));
 }
 
 MainWindow::~MainWindow() {
@@ -30,4 +32,8 @@ void MainWindow::on_applyBtn_released() {
     Context::getInstance()->reComputeConnectingLines(ui->thresholdSlider->value());
     ui->maincontainer->paintGL();
     ui->maincontainer->update();
+}
+
+void MainWindow::onMouseEvent() {
+    qDebug() << "Mouse on mainContainer pressed";
 }

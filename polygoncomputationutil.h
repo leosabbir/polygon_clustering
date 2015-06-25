@@ -7,7 +7,6 @@
 #include "custompoint.h"
 #include "customeline.h"
 #include "custompolygon.h"
-#include "polygonindexlinepair.h"
 
 class PolygonComputationUtil
 {
