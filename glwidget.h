@@ -19,9 +19,13 @@ public:
     double transformY(double y, double height);
 
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
 signals:
     void hadMousePress();
+
+    void hadMouseMove();
+
 };
 
 #endif // GLWIDGET_H

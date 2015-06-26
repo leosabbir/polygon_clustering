@@ -9,6 +9,7 @@
 #include "customeline.h"
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
+    //setMouseTracking(true); // if this is set, then mouse movement will be tracked even if not pressed
 }
 
 //GLWidget::~GLWidget() {
@@ -72,8 +73,11 @@ void GLWidget::update() {
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *){
-    qDebug() << "mouse pressed";
     emit hadMousePress();
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *) {
+    emit hadMouseMove();
 }
 
 double GLWidget::transformX(double x, double width) {

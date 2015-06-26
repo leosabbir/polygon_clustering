@@ -29,6 +29,8 @@ private slots:
 
     void onMouseEvent();
 
+    void onMouseMoveEvent();
+
 private:
     Ui::MainWindow *ui;
 };
