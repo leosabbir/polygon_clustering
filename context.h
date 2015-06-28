@@ -3,6 +3,7 @@
 
 #include "inputfilereader.h"
 #include "polygoncomputationutil.h"
+#include "polygonsintersectionfinder.h"
 
 class Context
 {
@@ -11,6 +12,7 @@ public:
     InputFileReader getFileReader();
     QList<CustomeLine> getConnectingLines();
     void reComputeConnectingLines(int threshold);
+    PolygonsIntersectionFinder getCgalUtility();
 
 
 private:
@@ -19,6 +21,8 @@ private:
     QList<CustomeLine> *connectingLines;
     InputFileReader *fileReader;
     PolygonComputationUtil *polygonComputationUtil;
+    PolygonsIntersectionFinder *cgalUtility;
+
 };
 
 #endif // CONTEXT_H

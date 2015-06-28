@@ -29,6 +29,10 @@ QList<CustomeLine> Context::getConnectingLines() {
     return *(this->connectingLines);
 }
 
+PolygonsIntersectionFinder Context::getCgalUtility() {
+    return *(this->cgalUtility);
+}
+
 void Context::reComputeConnectingLines(int threshold) {
     std::cout << "recomputing" << std::endl;
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold);

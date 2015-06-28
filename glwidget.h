@@ -2,6 +2,7 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
+#include "custompolygon.h"
 
 class GLWidget : public QGLWidget {
 
@@ -17,14 +18,20 @@ public:
 
     double transformX(double x, double width);
     double transformY(double y, double height);
+    double flipY(double y, double height);
 
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
-signals:
-    void hadMousePress();
+    void getSelectedPolygon(double x, double y);
 
-    void hadMouseMove();
+signals:
+    void hadMousePress(int x, int y);
+
+    void hadMouseMove(int x, int y);
+
+private:
+    CustomPolygon selectedPolygon;
 
 };
 

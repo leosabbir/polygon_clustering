@@ -4,6 +4,7 @@
 #include "custompolygon.h"
 #include "CGAL/Polygon_set_2.h"
 #include "CGAL/Boolean_set_operations_2.h"
+#include <CGAL/Polygon_2_algorithms.h>
 
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 
@@ -18,6 +19,7 @@ class PolygonsIntersectionFinder
 public:
     PolygonsIntersectionFinder();
     bool doIntersect(CustomPolygon p, CustomPolygon q);
+    bool isInside(CustomPolygon p, double x, double y);
 };
 
 #endif // POLYGONSINTERSECTIONFINDER_H

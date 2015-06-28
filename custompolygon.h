@@ -18,6 +18,7 @@ typedef CGAL::Point_2<K> Point;
 
 typedef CGAL::Polytope_distance_d_traits_2<K> Traits;
 typedef CGAL::Polytope_distance_d<Traits>     Polytope_distance;
+typedef Polygon::Vertex_iterator Vertex_iterator;
 
 
 class CustomPolygon : public Polygon {

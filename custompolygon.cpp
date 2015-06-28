@@ -8,7 +8,6 @@ typedef CGAL::Exact_predicates_exact_constructions_kernel Kernel;
 typedef Kernel::Point_2                                   Point_2;
 typedef CGAL::Polygon_2<Kernel>                           Polygon_2;
 typedef CGAL::Polygon_set_2<K, std::vector<Point> > Polygon_set_2;
-typedef Polygon::Vertex_iterator Vertex_iterator;
 
 CustomPolygon::CustomPolygon() {
 

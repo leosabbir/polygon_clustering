@@ -9,6 +9,7 @@
 #include "customeline.h"
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
+    //this->selectedPolygon = NULL;
     //setMouseTracking(true); // if this is set, then mouse movement will be tracked even if not pressed
 }
 
@@ -47,6 +48,16 @@ void GLWidget::paintGL() {
         glEnd();
     }
 
+    //if ( this->selectedPolygon != NULL) {
+        glColor3f(0, 0, 1);
+        glBegin(GL_LINE_LOOP);
+        for ( Vertex_iterator vertexIterator = this->selectedPolygon.vertices_begin(); vertexIterator != this->selectedPolygon.vertices_end(); vertexIterator++) {
+            //qDebug() << CGAL::to_double((*vertexIterator).x());
+            glVertex2d(transformX(CGAL::to_double(((*vertexIterator)).x()), width), transformY(CGAL::to_double(((*vertexIterator)).y()), height));
+        }
+        glEnd();
+    //}
+
     glColor3f(0, 1, 0);
     QList<CustomeLine>::iterator linesIterator;
     QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
@@ -72,12 +83,12 @@ void GLWidget::update() {
     QWidget::update();
 }
 
-void GLWidget::mousePressEvent(QMouseEvent *){
-    emit hadMousePress();
+void GLWidget::mousePressEvent(QMouseEvent *event){
+    emit hadMousePress(event->x(), this->flipY(event->y(), height()));
 }
 
-void GLWidget::mouseMoveEvent(QMouseEvent *) {
-    emit hadMouseMove();
+void GLWidget::mouseMoveEvent(QMouseEvent *event) {
+    emit hadMouseMove(event->x(), this->flipY(event->y(), height()));
 }
 
 double GLWidget::transformX(double x, double width) {
@@ -90,6 +101,24 @@ double GLWidget::transformY(double y, double height) {
     double transformed = (y * 1.0 - height)/height;
     transformed = y * 1.0 / height;
     return transformed * 2 - 1;
+}
+
+void GLWidget::getSelectedPolygon(double x, double y) {
+    QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
+
+    for (QList<CustomPolygon>::iterator iter = polygons.begin(); iter != polygons.end(); iter++) {
+        if(Context::getInstance()->getCgalUtility().isInside(*iter, x, y)) {
+            qDebug() << true;
+            this->selectedPolygon = (*iter);
+            //return this->selectedPolygon;
+        }
+    }
+
+    //return NULL;
+}
+
+double GLWidget::flipY(double y, double height) {
+    return height - y;
 }
 
 void GLWidget::resizeGL(int w, int h) {

@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->threshHoldLbl->setText(QString::number(Constants::INITIAL_THRESHOLD));
     ui->applyBtn->setEnabled(false);
 
-    connect(ui->maincontainer, SIGNAL(hadMousePress()), this, SLOT(onMouseEvent()));
-    connect(ui->maincontainer, SIGNAL(hadMouseMove()), this, SLOT(onMouseMoveEvent()));
+    connect(ui->maincontainer, SIGNAL(hadMousePress(int, int)), this, SLOT(onMouseEvent(int, int)));
+    connect(ui->maincontainer, SIGNAL(hadMouseMove(int, int)), this, SLOT(onMouseMoveEvent(int, int)));
 }
 
 MainWindow::~MainWindow() {
@@ -35,10 +35,14 @@ void MainWindow::on_applyBtn_released() {
     ui->maincontainer->update();
 }
 
-void MainWindow::onMouseEvent() {
-    qDebug() << "Mouse on mainContainer pressed";
+void MainWindow::onMouseEvent(int x, int y) {
+    qDebug() << "Pressed at: " << x << ", " << y;
+    ui->maincontainer->getSelectedPolygon(x, y);
+    ui->maincontainer->paintGL();
+    ui->maincontainer->update();
 }
 
-void MainWindow::onMouseMoveEvent() {
-    qDebug() << "Mouse MOVED on mainContainer pressed";
+void MainWindow::onMouseMoveEvent(int x, int y) {
+    qDebug() << "Moved to: " << x << ", " << y;
+    ui->maincontainer->getSelectedPolygon(x, y);
 }

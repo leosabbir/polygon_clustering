@@ -49,3 +49,25 @@ bool PolygonsIntersectionFinder::doIntersect(CustomPolygon p, CustomPolygon q) {
     }
     return CGAL::do_intersect(T1, T2);
 }
+
+bool PolygonsIntersectionFinder::isInside(CustomPolygon p, double x, double y) {
+    Point_2 points[p.size()];
+    int i = 0;
+    for (Vertex_iterator iter = p.vertices_begin(); iter != p.vertices_end(); iter++) {
+        double x = CGAL::to_double((*iter).x());
+        double y = CGAL::to_double((*iter).y());
+        points[i++] = Point_2(x, y);
+    }
+
+    switch (CGAL::bounded_side_2(points, points + p.size(), Point_2(x, y), Kernel())) {
+        case CGAL::ON_BOUNDED_SIDE:
+            return true;
+        case CGAL::ON_BOUNDARY:
+            return true;
+        default:
+            return false;
+    }
+
+}
+
+
