@@ -97,18 +97,18 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
             i++;
             continue;
         }
-        qDebug() << "match found";
+        //qDebug() << "match found";
         int j = 0;
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-            qDebug() << selectedVertexIndex;
+            //qDebug() << selectedVertexIndex;
             if (j == selectedVertexIndex) {
-                qDebug() << (*polygonIterator).size();
+                //qDebug() << (*polygonIterator).size();
                 (*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
                 //(*polygonIterator).erase(vertexIterator);
                 //(*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
                 //(*polygonIterator).clear();
-                qDebug() << (*polygonIterator).size();
-                qDebug() << "inserted";
+                //qDebug() << (*polygonIterator).size();
+                //qDebug() << "inserted";
                 return;
             }
             j++;
