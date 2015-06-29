@@ -54,7 +54,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
           }
           *(this->uiPolygons) << *polygon;
           if (cgalPolygon->is_clockwise_oriented()) {
-              cgalPolygon->reverse_orientation();
+              //cgalPolygon->reverse_orientation();
           }
           polygonsFromFile->append(*cgalPolygon);
           //std::cout << std::endl;
@@ -102,9 +102,12 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
             qDebug() << selectedVertexIndex;
             if (j == selectedVertexIndex) {
+                qDebug() << (*polygonIterator).size();
                 (*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
                 //(*polygonIterator).erase(vertexIterator);
+                //(*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
                 //(*polygonIterator).clear();
+                qDebug() << (*polygonIterator).size();
                 qDebug() << "inserted";
                 return;
             }
