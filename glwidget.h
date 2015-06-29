@@ -3,6 +3,8 @@
 
 #include <QGLWidget>
 #include "custompolygon.h"
+#include "constants.h"
+#include "utils.h"
 
 class GLWidget : public QGLWidget {
 
@@ -10,6 +12,7 @@ class GLWidget : public QGLWidget {
 
 public:
     explicit GLWidget(QWidget *parent = 0);
+
     //~GLWidget();
     void initiallizeGL();
     void paintGL();

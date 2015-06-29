@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     inputfilereader.cpp \
     context.cpp \
     polygonsintersectionfinder.cpp \
-    constants.cpp
+    constants.cpp \
+    utils.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     inputfilereader.h \
     context.h \
     polygonsintersectionfinder.h \
-    constants.h
+    constants.h \
+    utils.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/

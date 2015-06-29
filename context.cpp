@@ -12,6 +12,12 @@ Context::Context()
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), Constants::INITIAL_THRESHOLD);
+    this->selectedPolygon = -1;
+    this->threshold = Constants::INITIAL_THRESHOLD;
+}
+
+void Context::reset() {
+    this->reComputeConnectingLines(this->threshold);
 }
 
 Context* Context::getInstance() {
@@ -35,6 +41,18 @@ PolygonsIntersectionFinder Context::getCgalUtility() {
 
 void Context::reComputeConnectingLines(int threshold) {
     std::cout << "recomputing" << std::endl;
+    this->threshold = threshold;
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold);
 }
 
+int Context::getSelectedPolygon() {
+    return this->selectedPolygon;
+}
+
+void Context::setSelectedPolygon(int selectedPolygonIndex) {
+    this->selectedPolygon = selectedPolygonIndex;
+}
+
+bool Context::isPolygonSelected() {
+    return this->selectedPolygon > -1;
+}

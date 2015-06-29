@@ -2,7 +2,10 @@
 #define CUSTOMPOLYGON_H
 
 #include "customeline.h"
+#include "utils.h"
+#include "constants.h"
 #include <QList>
+#include <QDebug>
 
 #include <CGAL/Homogeneous.h>
 #include <CGAL/Polytope_distance_d.h>
@@ -30,6 +33,8 @@ public:
     CustomeLine* computeDistance(CustomPolygon p) const;
     bool doIntersect(CustomPolygon p) const;
     CustomPoint* getVertices() const;
+    int hasVertex(double x, double y);
+    bool isSelected;
 
 private:
     QList<int> connectedPolygons;

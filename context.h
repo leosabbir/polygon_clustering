@@ -9,10 +9,14 @@ class Context
 {
 public:
     static Context* getInstance();
+    void reset();
     InputFileReader getFileReader();
     QList<CustomeLine> getConnectingLines();
     void reComputeConnectingLines(int threshold);
     PolygonsIntersectionFinder getCgalUtility();
+    int getSelectedPolygon();
+    void setSelectedPolygon(int selectedPolygonIndex);
+    bool isPolygonSelected();
 
 
 private:
@@ -22,6 +26,8 @@ private:
     InputFileReader *fileReader;
     PolygonComputationUtil *polygonComputationUtil;
     PolygonsIntersectionFinder *cgalUtility;
+    int selectedPolygon;
+    int threshold;
 
 };
 

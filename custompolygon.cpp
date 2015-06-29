@@ -105,3 +105,20 @@ bool CustomPolygon::doIntersect(CustomPolygon p) const {
     //return false;
 }
 
+int CustomPolygon::hasVertex(double x, double y) {
+    int index = 0;
+    for ( Vertex_iterator vertexIterator = this->vertices_begin(); vertexIterator != this->vertices_end(); vertexIterator++) {
+        //qDebug() << CGAL::to_double((*vertexIterator).x());
+        double vertexX = CGAL::to_double(((*vertexIterator)).x()); //Utils::transform(CGAL::to_double(((*vertexIterator)).x()), Constants::WIDTH);
+        double vertexY = CGAL::to_double(((*vertexIterator)).y()); //Utils::transform(CGAL::to_double(((*vertexIterator)).y()), Constants::HEIGHT);
+
+        if ( x >= vertexX - Constants::DELTA && x <= vertexX + Constants::DELTA &&
+             y >= vertexY - Constants::DELTA && y <= vertexY + Constants::DELTA) {
+            //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
+            return index;
+        }
+        index++;
+    }
+    return -1;
+}
+

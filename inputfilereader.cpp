@@ -19,6 +19,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
         return *(this->polygonsFromFile);
     }
     this->polygonsFromFile = new QList<CustomPolygon>();
+    this->uiPolygons = new QList<QList<QPoint> >;
     if (file->open(QIODevice::ReadOnly)) {
        QTextStream in(file);
        while (!in.atEnd())
@@ -51,7 +52,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
               }
               //std::cout << " " << strValue.toDouble(); //<< strValue.toUtf8().constData();
           }
-          this->uiPolygons << *polygon;
+          *(this->uiPolygons) << *polygon;
           if (cgalPolygon->is_clockwise_oriented()) {
               cgalPolygon->reverse_orientation();
           }
@@ -67,5 +68,71 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
 }
 
 QList<QList<QPoint> > InputFileReader::getUiPolygons() {
-    return this->uiPolygons;
+    return *(this->uiPolygons);
+}
+
+void InputFileReader::updateUiPolygon(int polygonIndex, int vertexIndex, int x, int y) {
+    int i = 0;
+    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
+        if (i == polygonIndex) {
+            int j = 0;
+            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+                if (j == vertexIndex) {
+                    (*vertexIterator).setX(x);
+                    (*vertexIterator).setY(y);
+                    break;
+                }
+                j++;
+            }
+            break;
+        }
+        i++;
+    }
+}
+
+void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
+    int i = 0;
+    for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
+        if ( i != selectedPolygon ) {
+            i++;
+            continue;
+        }
+        qDebug() << "match found";
+        int j = 0;
+        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+            qDebug() << selectedVertexIndex;
+            if (j == selectedVertexIndex) {
+                (*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
+                //(*polygonIterator).erase(vertexIterator);
+                //(*polygonIterator).clear();
+                qDebug() << "inserted";
+                return;
+            }
+            j++;
+        }
+        return;
+    }
+}
+
+int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {
+    int index = 0;
+    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
+        if (index == selectedPolygon) {
+            int j = 0;
+            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+                double vertexX = (*vertexIterator).x();
+                double vertexY = (*vertexIterator).y();
+
+                if ( x >= vertexX - Constants::DELTA && x <= vertexX + Constants::DELTA &&
+                     y >= vertexY - Constants::DELTA && y <= vertexY + Constants::DELTA) {
+                    //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
+                    return j;
+                }
+                j++;
+            }
+            return -1;
+        }
+        index++;
+    }
+    return -1;
 }

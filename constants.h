@@ -7,6 +7,11 @@ class Constants
 public:
     Constants();
     static const int INITIAL_THRESHOLD = 100;
+
+    static double WIDTH;
+    static double HEIGHT;
+
+    static const int DELTA = 10;
 };
 
 #endif // CONSTANTS_H
