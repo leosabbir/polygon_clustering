@@ -139,3 +139,45 @@ int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {
     }
     return -1;
 }
+
+bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
+    int index = 0;
+    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
+        if (index == selectedPolygon) {
+            int j = 0;
+            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+                double x1 = (*vertexIterator).x();
+                double y1 = (*vertexIterator).y();
+
+                double x2;
+                double y2;
+                if (vertexIterator + 1 == (*polygonIterator).end()) {
+                    x2 = (*(*polygonIterator).begin()).x();
+                    y2 = (*(*polygonIterator).begin()).y();
+                } else {
+                    x2 = (*(vertexIterator+1)).x();
+                    y2 = (*(vertexIterator+1)).y();
+                }
+
+                //TODO fix for vertical line
+                double expectedY;
+                if( x2 == x1) {
+                    expectedY = y;
+                } else {
+                    expectedY = (y2-y1)/(x2-x1) * (x-x1) + y1;
+                }
+
+                if ( y >= expectedY - Constants::DELTA && y <= expectedY + Constants::DELTA) {
+                    //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
+                    qDebug() << "Hurray Point found";
+                    return j;
+                }
+
+                j++;
+            }
+            return -1;
+        }
+        index++;
+    }
+    return -1;
+}

@@ -20,6 +20,7 @@ public:
     PolygonsIntersectionFinder();
     bool doIntersect(CustomPolygon p, CustomPolygon q);
     bool isInside(CustomPolygon p, double x, double y);
+    CGAL::Bounded_side getPointLocationOnPolygon(CustomPolygon p, double x, double y);
 };
 
 #endif // POLYGONSINTERSECTIONFINDER_H

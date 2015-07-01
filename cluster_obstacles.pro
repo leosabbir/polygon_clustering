@@ -39,7 +39,8 @@ HEADERS  += mainwindow.h \
     context.h \
     polygonsintersectionfinder.h \
     constants.h \
-    utils.h
+    utils.h \
+    enums.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/

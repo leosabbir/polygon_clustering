@@ -14,6 +14,7 @@ Context::Context()
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), Constants::INITIAL_THRESHOLD);
     this->selectedPolygon = -1;
     this->threshold = Constants::INITIAL_THRESHOLD;
+    //this->editMode = EDIT_MODE::NORMAL_MODE;
 }
 
 void Context::reset() {
@@ -56,3 +57,11 @@ void Context::setSelectedPolygon(int selectedPolygonIndex) {
 bool Context::isPolygonSelected() {
     return this->selectedPolygon > -1;
 }
+
+//EDIT_MODE Context::getEditMode() {
+//    return this->editMode;
+//}
+
+//void Context::setEditMode(EDIT_MODE editMode) {
+//    this->editMode = editMode;
+//}

@@ -114,11 +114,17 @@ void GLWidget::getSelectedPolygon(double x, double y) {
 
     int i = 0;
     for (QList<CustomPolygon>::iterator iter = polygons.begin(); iter != polygons.end(); iter++, i++) {
-        if(Context::getInstance()->getCgalUtility().isInside(*iter, x, y)) {
+        CGAL::Bounded_side positionOfPointInPolygon = Context::getInstance()->getCgalUtility().getPointLocationOnPolygon(*iter, x, y);
+        if(positionOfPointInPolygon != CGAL::ON_UNBOUNDED_SIDE) {
             //qDebug() << true;
             Context::getInstance()->setSelectedPolygon(i);
             this->selectedPolygon = *iter;
-            //this->selectedPolygon->isSelected = true;
+            // can anything be done ??
+            //if(positionOfPointInPolygon == CGAL::ON_BOUNDARY) { //this could be eliminated
+                //TODO add vertex to the polygon
+                Context::getInstance()->getFileReader().insertVertex(i, x, y);
+
+            //}
             return;
             //return this->selectedPolygon;
         }

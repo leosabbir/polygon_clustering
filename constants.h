@@ -11,7 +11,7 @@ public:
     static double WIDTH;
     static double HEIGHT;
 
-    static const int DELTA = 10;
+    static const int DELTA = 5;
 };
 
 #endif // CONSTANTS_H
