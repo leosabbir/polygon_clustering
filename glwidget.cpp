@@ -43,7 +43,8 @@ void GLWidget::paintGL() {
     QList< QList<QPoint> > polygons = Context::getInstance()->getFileReader().getUiPolygons();//DummyData().getPolygons();
     for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
         glBegin(GL_LINE_LOOP);
-        if ( i++ == Context::getInstance()->getSelectedPolygon()) {
+        bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
+        if (isSelectedPolygon) {
             glColor3f(0, 0, 1);
         } else {
             glColor3f(1, 0, 0);
@@ -54,6 +55,17 @@ void GLWidget::paintGL() {
             glVertex2d(transformX(vertex.x(), width), transformY(vertex.y(), height));
         }
         glEnd();
+        if (isSelectedPolygon) {
+            glColor3f(1, 1, 1);
+            glEnable(GL_POINT_SMOOTH);
+            glPointSize(3.0);
+            glBegin(GL_POINTS);
+            for ( vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+                QPoint vertex = *vertexIterator;
+                glVertex2d(transformX(vertex.x(), width), transformY(vertex.y(), height));
+            }
+            glEnd();
+        }
     }
 
     glColor3f(0, 1, 0);
