@@ -4,7 +4,6 @@
 #include "inputfilereader.h"
 #include "polygoncomputationutil.h"
 #include "polygonsintersectionfinder.h"
-#include "enums.h"
 
 class Context
 {
@@ -18,8 +17,8 @@ public:
     int getSelectedPolygon();
     void setSelectedPolygon(int selectedPolygonIndex);
     bool isPolygonSelected();
-    //EDIT_MODE getEditMode();
-    //void setEditMode(EDIT_MODE editMode);
+    int getEditMode();
+    void setEditMode(int editMode);
 
 
 private:
@@ -31,7 +30,7 @@ private:
     PolygonsIntersectionFinder *cgalUtility;
     int selectedPolygon;
     int threshold;
-    //EDIT_MODE editMode;
+    int editMode;
 
 };
 

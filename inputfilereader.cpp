@@ -108,6 +108,35 @@ void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIn
     }
 }
 
+void InputFileReader::removeVertex(int selectedPolygon, int selectedVertexIndex, double x, double y) {
+    int i = 0;
+    for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
+        if ( i != selectedPolygon ) {
+            i++;
+            continue;
+        }
+        int j = 0;
+        //bool lastVertex = false;
+        //if (selectedVertexIndex == (*polygonIterator).size()) {
+        //    lastVertex = true;
+        //}
+
+        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+            if (j == selectedVertexIndex) {
+                (*polygonIterator).erase(vertexIterator);
+//                if (lastVertex) {
+//                    (*polygonIterator).push_back(*(new CustomPoint(newX, newY)));
+//                } else {
+//                    (*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
+//                }
+                return;
+            }
+            j++;
+        }
+        return;
+    }
+}
+
 int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {// can anything be done ??
     int index = 0;
     for(QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end(); polygonIterator++) {

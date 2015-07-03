@@ -66,6 +66,7 @@ void GLWidget::paintGL() {
     /****/
 
     glColor3f(0, 1, 0);
+    glLineWidth(1);
     QList<CustomeLine>::iterator linesIterator;
     QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
     //std::cout << connectingLines.size() << " lines in the list" << std::endl;
@@ -89,29 +90,42 @@ void GLWidget::update() {
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event){
-    this->getSelectedPolygon(event->x(), this->flipY(event->y(), height()));
-    emit hadMousePress(event->x(), this->flipY(event->y(), height()));
+    double x = event->x();
+    double y = this->flipY(event->y(), height());
+    int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), x, y);
+    this->getSelectedPolygon(x, y);
 
-    /**
-      if EDIT_MODE
+    switch (Context::getInstance()->getEditMode()) {
+    case Constants::ADD_VERTEX_MODE:
+        Context::getInstance()->getFileReader().insertVertex(Context::getInstance()->getSelectedPolygon(), x, y);
+        break;
+    case Constants::DELETE_VERTEX_MODE:
+        Context::getInstance()->getFileReader().removeVertex(Context::getInstance()->getSelectedPolygon(), selectedVertexIndex, x, y);
+        break;
+    case Constants::EDIT_MODE:
+        //Context::getInstance()->getFileReader().insertVertex(i, x, y);
+        break;
+    case Constants::NORMAL_MODE:
+        break;
+    default:
+        break;
+    }
 
-      if ADD_VERTEX_MODE
-      if DELETE_VERTEX_MODE
-
-      */
+    emit hadMousePress(x, y);
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
-    int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), event->x(), this->flipY(event->y(), height()));
+    if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE) {
+        int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), event->x(), this->flipY(event->y(), height()));
 
-    if ( Context::getInstance()->isPolygonSelected() && selectedVertexIndex > -1) {
-        //qDebug() << "clicked on the vertex";
-        Context::getInstance()->getFileReader().updateSelectedPolygonVertex(Context::getInstance()->getSelectedPolygon() ,selectedVertexIndex, event->x(), this->flipY(event->y(), height()));
-        //Context::getInstance()->reset();
-        this->update();
+        if ( Context::getInstance()->isPolygonSelected() && selectedVertexIndex > -1) {
+            //qDebug() << "clicked on the vertex";
+            Context::getInstance()->getFileReader().updateSelectedPolygonVertex(Context::getInstance()->getSelectedPolygon() ,selectedVertexIndex, event->x(), this->flipY(event->y(), height()));
+            //Context::getInstance()->reset();
+            this->update();
+        }
+        emit hadMouseMove(event->x(), this->flipY(event->y(), height()));
     }
-    emit hadMouseMove(event->x(), this->flipY(event->y(), height()));
-
 }
 
 double GLWidget::transformX(double x, double width) {
@@ -138,7 +152,7 @@ void GLWidget::getSelectedPolygon(double x, double y) {
 
             //if(positionOfPointInPolygon == CGAL::ON_BOUNDARY) { //this could be eliminated
                 //TODO if clicked on vertex then don't insert
-                Context::getInstance()->getFileReader().insertVertex(i, x, y);
+                //Context::getInstance()->getFileReader().insertVertex(i, x, y);
 
             //}
             return;

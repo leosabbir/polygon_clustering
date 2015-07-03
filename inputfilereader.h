@@ -13,6 +13,7 @@ public:
     void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
     bool insertVertex(int selectedPolygon, double x, double y);
     void insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
+    void removeVertex(int selectedPolygon, int selectedVertexIndex, double x, double y);
     int hasVertex(int selectedPolygon, double x, double y);
 
 
