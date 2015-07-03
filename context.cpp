@@ -63,5 +63,8 @@ int Context::getEditMode() {
 }
 
 void Context::setEditMode(int editMode) {
+    if (editMode < Constants::NORMAL_MODE || editMode > Constants::DELETE_VERTEX_MODE) {
+        throw std::invalid_argument("Invalid Edit Mode");
+    }
     this->editMode = editMode;
 }

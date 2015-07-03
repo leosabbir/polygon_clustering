@@ -19,6 +19,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void initializeEditModes();
 
 private slots:
     void on_thresholdSlider_sliderMoved(int position);
@@ -30,6 +31,8 @@ private slots:
     void onMouseEvent(int x, int y);
 
     void onMouseMoveEvent(int x, int y);
+
+    void on_editModeComboBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

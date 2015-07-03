@@ -115,7 +115,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
-    if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE) {
+    if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE || Context::getInstance()->getEditMode() == Constants::ADD_VERTEX_MODE) {
         int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), event->x(), this->flipY(event->y(), height()));
 
         if ( Context::getInstance()->isPolygonSelected() && selectedVertexIndex > -1) {

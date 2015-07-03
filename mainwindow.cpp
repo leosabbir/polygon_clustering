@@ -5,7 +5,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-
+    this->initializeEditModes();
     ui->thresholdSlider->setValue(Constants::INITIAL_THRESHOLD);
     ui->threshHoldLbl->setText(QString::number(Constants::INITIAL_THRESHOLD));
     ui->applyBtn->setEnabled(false);
@@ -17,6 +17,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow() {
     delete ui;
 }
+
+void MainWindow::initializeEditModes() {
+    this->ui->editModeComboBox->addItem("Normal");
+    this->ui->editModeComboBox->addItem("Edit");
+    this->ui->editModeComboBox->addItem("Add Vertex");
+    this->ui->editModeComboBox->addItem("Delete Vertex");
+
+    this->ui->editModeComboBox->setCurrentIndex(0);
+}
+
 
 void MainWindow::on_thresholdSlider_sliderMoved(int position) {
     ui->threshHoldLbl->setText(QString::number(position));
@@ -36,13 +46,13 @@ void MainWindow::on_applyBtn_released() {
 }
 
 void MainWindow::onMouseEvent(int x, int y) {
-    //qDebug() << "Pressed at: " << x << ", " << y;
-    //ui->maincontainer->getSelectedPolygon(x, y);
     ui->maincontainer->paintGL();
     ui->maincontainer->update();
 }
 
 void MainWindow::onMouseMoveEvent(int x, int y) {
-    //qDebug() << "Moved to: " << x << ", " << y;
-    //ui->maincontainer->getSelectedPolygon(x, y);
+}
+
+void MainWindow::on_editModeComboBox_currentIndexChanged(int index) {
+    Context::getInstance()->setEditMode(index);
 }
