@@ -65,24 +65,27 @@ void GLWidget::paintGL() {
     }
     /****/
 
-    glColor3f(0, 1, 0);
-    glLineWidth(1);
-    QList<CustomeLine>::iterator linesIterator;
-    QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
-    //std::cout << connectingLines.size() << " lines in the list" << std::endl;
-    for (linesIterator = connectingLines.begin(); linesIterator != connectingLines.end(); linesIterator++) {
-        glBegin(GL_LINE_LOOP);
-            CustomeLine line = *linesIterator;
-            double x = CGAL::to_double(line.getQ().x());
-            double y = CGAL::to_double(line.getQ().y());
-            glVertex2d(transformX(x, width), transformY(y, height));
+    /***Draw Connecting Lines***/
+    if (Context::getInstance()->isDrawConnectingLines()) {
+        glColor3f(0, 1, 0);
+        glLineWidth(1);
+        QList<CustomeLine>::iterator linesIterator;
+        QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
+        //std::cout << connectingLines.size() << " lines in the list" << std::endl;
+        for (linesIterator = connectingLines.begin(); linesIterator != connectingLines.end(); linesIterator++) {
+            glBegin(GL_LINE_LOOP);
+                CustomeLine line = *linesIterator;
+                double x = CGAL::to_double(line.getQ().x());
+                double y = CGAL::to_double(line.getQ().y());
+                glVertex2d(transformX(x, width), transformY(y, height));
 
-            x = CGAL::to_double(line.getP().x());
-            y = CGAL::to_double(line.getP().y());
-            glVertex2d(transformX(x, width), transformY(y, height));
-        glEnd();
+                x = CGAL::to_double(line.getP().x());
+                y = CGAL::to_double(line.getP().y());
+                glVertex2d(transformX(x, width), transformY(y, height));
+            glEnd();
+        }
     }
-
+    /***End Draw Connecting Lines***/
 }
 
 void GLWidget::update() {
@@ -116,6 +119,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
     if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE || Context::getInstance()->getEditMode() == Constants::ADD_VERTEX_MODE) {
+        Context::getInstance()->setDrawConnectingLines(false);
         int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), event->x(), this->flipY(event->y(), height()));
 
         if ( Context::getInstance()->isPolygonSelected() && selectedVertexIndex > -1) {

@@ -40,6 +40,7 @@ void MainWindow::on_thresholdSlider_valueChanged(int value) {
 
 void MainWindow::on_applyBtn_released() {
     ui->applyBtn->setEnabled(false);
+    Context::getInstance()->setDrawConnectingLines(true);
     Context::getInstance()->reComputeConnectingLines(ui->thresholdSlider->value());
     ui->maincontainer->paintGL();
     ui->maincontainer->update();
@@ -51,6 +52,7 @@ void MainWindow::onMouseEvent(int x, int y) {
 }
 
 void MainWindow::onMouseMoveEvent(int x, int y) {
+    ui->applyBtn->setEnabled(true);
 }
 
 void MainWindow::on_editModeComboBox_currentIndexChanged(int index) {

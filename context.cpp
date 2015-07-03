@@ -15,6 +15,7 @@ Context::Context()
     this->selectedPolygon = -1;
     this->threshold = Constants::INITIAL_THRESHOLD;
     this->editMode = Constants::DELETE_VERTEX_MODE;
+    this->drawConnectingLines = true;
 }
 
 void Context::reset() {
@@ -67,4 +68,12 @@ void Context::setEditMode(int editMode) {
         throw std::invalid_argument("Invalid Edit Mode");
     }
     this->editMode = editMode;
+}
+
+void Context::setDrawConnectingLines(bool drawConnectingLines) {
+    this->drawConnectingLines = drawConnectingLines;
+}
+
+bool Context::isDrawConnectingLines() {
+    return this->drawConnectingLines;
 }

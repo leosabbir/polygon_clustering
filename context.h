@@ -19,6 +19,8 @@ public:
     bool isPolygonSelected();
     int getEditMode();
     void setEditMode(int editMode);
+    void setDrawConnectingLines(bool drawConnectingLines);
+    bool isDrawConnectingLines();
 
 
 private:
@@ -31,6 +33,7 @@ private:
     int selectedPolygon;
     int threshold;
     int editMode;
+    bool drawConnectingLines;
 
 };
 
