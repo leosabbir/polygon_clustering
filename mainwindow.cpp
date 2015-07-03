@@ -37,7 +37,7 @@ void MainWindow::on_applyBtn_released() {
 
 void MainWindow::onMouseEvent(int x, int y) {
     //qDebug() << "Pressed at: " << x << ", " << y;
-    ui->maincontainer->getSelectedPolygon(x, y);
+    //ui->maincontainer->getSelectedPolygon(x, y);
     ui->maincontainer->paintGL();
     ui->maincontainer->update();
 }

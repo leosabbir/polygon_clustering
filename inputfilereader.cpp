@@ -3,15 +3,9 @@
 
 const QString InputFileReader::INPUTFILEPATH = ":/resources/input.txt";
 
-InputFileReader::InputFileReader()
-{
-    //QDir::setCurrent("/home/laxmi/Documents/sabbirThesis/cluster_obstacles/");
-    //QDir::setCurrent(".");
-    //QDir::setCurrent(QCoreApplication::applicationDirPath());
-    //std::cout << QDir::currentPath().toUtf8().constData() << std::endl;
+InputFileReader::InputFileReader() {
     file = new QFile(this->INPUTFILEPATH);
     this->polygonsFromFile = NULL;
-    //file->setFileName(this->INPUTFILEPATH);
 }
 
 QList<CustomPolygon> InputFileReader::constructPolygons() {
@@ -19,7 +13,7 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
         return *(this->polygonsFromFile);
     }
     this->polygonsFromFile = new QList<CustomPolygon>();
-    this->uiPolygons = new QList<QList<QPoint> >;
+
     if (file->open(QIODevice::ReadOnly)) {
        QTextStream in(file);
        while (!in.atEnd())
@@ -31,9 +25,9 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
           QStringList coordinates = line.split(" ");
           int i = 1;
           double x,y;
-          QList<QPoint> *polygon;
+
           CustomPolygon *cgalPolygon;
-          polygon = new QList<QPoint>();
+
           cgalPolygon = new CustomPolygon();
           for ( QStringList::Iterator iter = coordinates.begin(); iter != coordinates.end(); ++iter ) {
               QString strValue = *iter;
@@ -46,18 +40,15 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
               default:
                   i = 1;
                   y = strValue.toDouble();
-                  *polygon << QPoint(x, y);
+
                   cgalPolygon->push_back(*(new Point(x, y)));
                   break;
               }
-              //std::cout << " " << strValue.toDouble(); //<< strValue.toUtf8().constData();
           }
-          *(this->uiPolygons) << *polygon;
           if (cgalPolygon->is_clockwise_oriented()) {
-              //cgalPolygon->reverse_orientation();
+              cgalPolygon->reverse_orientation();
           }
           polygonsFromFile->append(*cgalPolygon);
-          //std::cout << std::endl;
        }
        file->close();
     } else {
@@ -67,29 +58,6 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
     return *(this->polygonsFromFile);
 }
 
-QList<QList<QPoint> > InputFileReader::getUiPolygons() {
-    return *(this->uiPolygons);
-}
-
-void InputFileReader::updateUiPolygon(int polygonIndex, int vertexIndex, int x, int y) {
-    int i = 0;
-    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
-        if (i == polygonIndex) {
-            int j = 0;
-            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
-                if (j == vertexIndex) {
-                    (*vertexIterator).setX(x);
-                    (*vertexIterator).setY(y);
-                    break;
-                }
-                j++;
-            }
-            break;
-        }
-        i++;
-    }
-}
-
 void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
@@ -97,18 +65,11 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
             i++;
             continue;
         }
-        //qDebug() << "match found";
         int j = 0;
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-            //qDebug() << selectedVertexIndex;
             if (j == selectedVertexIndex) {
-                //qDebug() << (*polygonIterator).size();
                 (*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
                 //(*polygonIterator).erase(vertexIterator);
-                //(*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
-                //(*polygonIterator).clear();
-                //qDebug() << (*polygonIterator).size();
-                //qDebug() << "inserted";
                 return;
             }
             j++;
@@ -124,23 +85,21 @@ void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIn
             i++;
             continue;
         }
-        //qDebug() << "match found";
         int j = 0;
+        bool lastVertex = false;
         if (selectedVertexIndex == (*polygonIterator).size()) {
-            selectedVertexIndex--;
+            lastVertex = true;
         }
         qDebug() << "insert at " << selectedVertexIndex;
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-            //qDebug() << selectedVertexIndex;
-            if (j == selectedVertexIndex) {
-                //qDebug() << (*polygonIterator).size();
-                //(*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
-                //(*polygonIterator).erase(vertexIterator);
+            qDebug() << j;
+            if (j == selectedVertexIndex || lastVertex ) {
                 qDebug() << "inserting at " << selectedVertexIndex;
-                (*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
-                //(*polygonIterator).clear();
-                //qDebug() << (*polygonIterator).size();
-                //qDebug() << "inserted";
+                if (lastVertex) {
+                    (*polygonIterator).push_back(*(new CustomPoint(newX, newY)));
+                } else {
+                    (*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
+                }
                 return;
             }
             j++;
@@ -149,18 +108,17 @@ void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIn
     }
 }
 
-int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {
+int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {// can anything be done ??
     int index = 0;
-    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
+    for(QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end(); polygonIterator++) {
         if (index == selectedPolygon) {
             int j = 0;
-            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
-                double vertexX = (*vertexIterator).x();
-                double vertexY = (*vertexIterator).y();
+            for(Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+                double vertexX = CGAL::to_double((*vertexIterator).x());
+                double vertexY = CGAL::to_double((*vertexIterator).y());
 
                 if ( x >= vertexX - Constants::DELTA && x <= vertexX + Constants::DELTA &&
                      y >= vertexY - Constants::DELTA && y <= vertexY + Constants::DELTA) {
-                    //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
                     return j;
                 }
                 j++;
@@ -174,21 +132,21 @@ int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {
 
 bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
     int index = 0;
-    for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
+    for(QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end(); polygonIterator++) {
         if (index == selectedPolygon) {
             int j = 0;
-            for(QList<QPoint>::iterator vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
-                double x1 = (*vertexIterator).x();
-                double y1 = (*vertexIterator).y();
+            for(Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+                double x1 = CGAL::to_double((*vertexIterator).x());
+                double y1 = CGAL::to_double((*vertexIterator).y());
 
                 double x2;
                 double y2;
-                if (vertexIterator + 1 == (*polygonIterator).end()) {
-                    x2 = (*(*polygonIterator).begin()).x();
-                    y2 = (*(*polygonIterator).begin()).y();
+                if (vertexIterator + 1 == (*polygonIterator).vertices_end()) {
+                    x2 = CGAL::to_double((*(*polygonIterator).vertices_begin()).x());
+                    y2 = CGAL::to_double((*(*polygonIterator).vertices_begin()).y());
                 } else {
-                    x2 = (*(vertexIterator+1)).x();
-                    y2 = (*(vertexIterator+1)).y();
+                    x2 = CGAL::to_double((*(vertexIterator+1)).x());
+                    y2 = CGAL::to_double((*(vertexIterator+1)).y());
                 }
 
                 //TODO fix for vertical line
@@ -202,8 +160,18 @@ bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
                 if ( (x2 == x1 && x >= x1 - Constants::DELTA && x <= x1 + Constants::DELTA && Utils::inBetween(y, y1, y2))
                      || (x2 != x1 && y >= expectedY - Constants::DELTA && y <= expectedY + Constants::DELTA && Utils::inBetween(x, x1, x2))) {
                     //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
-                    (*polygonIterator).insert(j+1, *(new QPoint(x, y)));
-                    this->insertCGALVertex(selectedPolygon, j+1, x, y);
+                    //(*polygonIterator).insert(j+1, *(new QPoint(x, y)));
+                    bool lastVertex = false;
+                    int insertionIndex = j+1;
+                    if (insertionIndex == (*polygonIterator).size()) {
+                        lastVertex = true;
+                    }
+                    if (lastVertex) {
+                        (*polygonIterator).push_back(*(new CustomPoint(x, y)));
+                    } else {
+                        (*polygonIterator).insert(vertexIterator+1, *(new CustomPoint(x, y)));
+                    }
+                    //this->insertCGALVertex(selectedPolygon, j+1, x, y);
                     qDebug() << "Hurray Point found" << expectedY << " " << y;
                     return true;
                 }
