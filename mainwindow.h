@@ -28,7 +28,7 @@ private slots:
 
     void on_applyBtn_released();
 
-    void onMouseEvent(int x, int y);
+    void onMouseEvent(int x, int y, bool disableConnectingLines);
 
     void onMouseMoveEvent(int x, int y);
 

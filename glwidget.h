@@ -29,7 +29,7 @@ public:
     void getSelectedPolygon(double x, double y);
 
 signals:
-    void hadMousePress(int x, int y);
+    void hadMousePress(int x, int y, bool disableConnectingLines);
 
     void hadMouseMove(int x, int y);
 

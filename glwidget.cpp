@@ -93,6 +93,7 @@ void GLWidget::update() {
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event){
+    bool disableConnectingLines = false;
     double x = event->x();
     double y = this->flipY(event->y(), height());
     int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), x, y);
@@ -100,10 +101,16 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
 
     switch (Context::getInstance()->getEditMode()) {
     case Constants::ADD_VERTEX_MODE:
-        Context::getInstance()->getFileReader().insertVertex(Context::getInstance()->getSelectedPolygon(), x, y);
+        if (Context::getInstance()->getFileReader().insertVertex(Context::getInstance()->getSelectedPolygon(), x, y)) {
+            disableConnectingLines = true;
+            Context::getInstance()->setDrawConnectingLines(false);
+        }
         break;
     case Constants::DELETE_VERTEX_MODE:
-        Context::getInstance()->getFileReader().removeVertex(Context::getInstance()->getSelectedPolygon(), selectedVertexIndex, x, y);
+        if (Context::getInstance()->getFileReader().removeVertex(Context::getInstance()->getSelectedPolygon(), selectedVertexIndex, x, y)) {
+            disableConnectingLines = true;
+            Context::getInstance()->setDrawConnectingLines(false);
+        }
         break;
     case Constants::EDIT_MODE:
         //Context::getInstance()->getFileReader().insertVertex(i, x, y);
@@ -114,7 +121,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
         break;
     }
 
-    emit hadMousePress(x, y);
+    emit hadMousePress(x, y, disableConnectingLines);
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {

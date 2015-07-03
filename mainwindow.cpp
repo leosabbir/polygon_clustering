@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->threshHoldLbl->setText(QString::number(Constants::INITIAL_THRESHOLD));
     ui->applyBtn->setEnabled(false);
 
-    connect(ui->maincontainer, SIGNAL(hadMousePress(int, int)), this, SLOT(onMouseEvent(int, int)));
+    connect(ui->maincontainer, SIGNAL(hadMousePress(int, int, bool)), this, SLOT(onMouseEvent(int, int, bool)));
     connect(ui->maincontainer, SIGNAL(hadMouseMove(int, int)), this, SLOT(onMouseMoveEvent(int, int)));
 }
 
@@ -46,7 +46,10 @@ void MainWindow::on_applyBtn_released() {
     ui->maincontainer->update();
 }
 
-void MainWindow::onMouseEvent(int x, int y) {
+void MainWindow::onMouseEvent(int x, int y, bool disableConnectingLines) {
+    if (disableConnectingLines) {
+        ui->applyBtn->setEnabled(true);
+    }
     ui->maincontainer->paintGL();
     ui->maincontainer->update();
 }
