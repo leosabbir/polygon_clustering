@@ -36,12 +36,15 @@ void GLWidget::paintGL() {
     //glutWireTeapot(0.6);
     glColor3f(1, 0, 0);
 
-    QList< QList<QPoint> >::iterator polygonIterator;
+    //QList< QList<QPoint> >::iterator polygonIterator;
 //    InputFileReader fileReader;
 //    fileReader.constructPolygons();Context
     int i = 0;
+    // why not try with cgal polygons???
+    /*
     QList< QList<QPoint> > polygons = Context::getInstance()->getFileReader().getUiPolygons();//DummyData().getPolygons();
     for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
+        glLineWidth(3);
         glBegin(GL_LINE_LOOP);
         bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
         if (isSelectedPolygon) {
@@ -65,8 +68,39 @@ void GLWidget::paintGL() {
                 glVertex2d(transformX(vertex.x(), width), transformY(vertex.y(), height));
             }
             glEnd();
-        }
+        }polygonIterator
     }
+    **/
+    /****/
+    QList<CustomPolygon>::iterator polygonIterator;
+    QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
+    for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
+        glLineWidth(3);
+        glBegin(GL_LINE_LOOP);
+        bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
+        if (isSelectedPolygon) {
+            glColor3f(0, 0, 1);
+        } else {
+            glColor3f(1, 0, 0);
+        }
+
+        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+        }
+        glEnd();
+//        if (isSelectedPolygon) {
+//            glColor3f(1, 1, 1);
+//            glEnable(GL_POINT_SMOOTH);
+//            glPointSize(3.0);
+//            glBegin(GL_POINTS);
+//            for ( vertexIterator = (*polygonIterator).begin(); vertexIterator != (*polygonIterator).end(); vertexIterator++) {
+//                QPoint vertex = *vertexIterator;
+//                glVertex2d(transformX(vertex.x(), width), transformY(vertex.y(), height));
+//            }
+//            glEnd();
+//        }
+    }
+    /****/
 
     glColor3f(0, 1, 0);
     QList<CustomeLine>::iterator linesIterator;
@@ -134,6 +168,7 @@ void GLWidget::getSelectedPolygon(double x, double y) {
             // can anything be done ??
             //if(positionOfPointInPolygon == CGAL::ON_BOUNDARY) { //this could be eliminated
                 //TODO add vertex to the polygon
+            //TODO if clicked on vertex then don't insert
                 Context::getInstance()->getFileReader().insertVertex(i, x, y);
 
             //}

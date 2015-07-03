@@ -14,6 +14,7 @@ public:
     void updateUiPolygon(int polygonIndex, int vertexIndex, int x, int y);
     void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
     bool insertVertex(int selectedPolygon, double x, double y);
+    void insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
     int hasVertex(int selectedPolygon, double x, double y);
 
 

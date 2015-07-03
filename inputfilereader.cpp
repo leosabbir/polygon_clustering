@@ -117,6 +117,38 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
     }
 }
 
+void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
+    int i = 0;
+    for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
+        if ( i != selectedPolygon ) {
+            i++;
+            continue;
+        }
+        //qDebug() << "match found";
+        int j = 0;
+        if (selectedVertexIndex == (*polygonIterator).size()) {
+            selectedVertexIndex--;
+        }
+        qDebug() << "insert at " << selectedVertexIndex;
+        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+            //qDebug() << selectedVertexIndex;
+            if (j == selectedVertexIndex) {
+                //qDebug() << (*polygonIterator).size();
+                //(*polygonIterator).set(vertexIterator, *(new CustomPoint(newX, newY)));
+                //(*polygonIterator).erase(vertexIterator);
+                qDebug() << "inserting at " << selectedVertexIndex;
+                (*polygonIterator).insert(vertexIterator, *(new CustomPoint(newX, newY)));
+                //(*polygonIterator).clear();
+                //qDebug() << (*polygonIterator).size();
+                //qDebug() << "inserted";
+                return;
+            }
+            j++;
+        }
+        return;
+    }
+}
+
 int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {
     int index = 0;
     for(QList<QList<QPoint> >::iterator polygonIterator = this->uiPolygons->begin(); polygonIterator != this->uiPolygons->end(); polygonIterator++) {
@@ -167,17 +199,20 @@ bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
                     expectedY = (y2-y1)/(x2-x1) * (x-x1) + y1;
                 }
 
-                if ( y >= expectedY - Constants::DELTA && y <= expectedY + Constants::DELTA) {
+                if ( (x2 == x1 && x >= x1 - Constants::DELTA && x <= x1 + Constants::DELTA && Utils::inBetween(y, y1, y2))
+                     || (x2 != x1 && y >= expectedY - Constants::DELTA && y <= expectedY + Constants::DELTA && Utils::inBetween(x, x1, x2))) {
                     //qDebug() << "vertexX " << vertexX << "vertexY " << vertexY;
-                    qDebug() << "Hurray Point found";
-                    return j;
+                    (*polygonIterator).insert(j+1, *(new QPoint(x, y)));
+                    this->insertCGALVertex(selectedPolygon, j+1, x, y);
+                    qDebug() << "Hurray Point found" << expectedY << " " << y;
+                    return true;
                 }
 
                 j++;
             }
-            return -1;
+            //return -1;
         }
         index++;
     }
-    return -1;
+    return false;
 }
