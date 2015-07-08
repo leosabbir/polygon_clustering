@@ -96,44 +96,54 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
     bool disableConnectingLines = false;
     double x = event->x();
     double y = this->flipY(event->y(), height());
+    Context::getInstance()->setCurrentX(x);
+    Context::getInstance()->setCurrentY(y);
     int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), x, y);
     this->getSelectedPolygon(x, y);
 
     switch (Context::getInstance()->getEditMode()) {
-    case Constants::ADD_VERTEX_MODE:
-        if (Context::getInstance()->getFileReader().insertVertex(Context::getInstance()->getSelectedPolygon(), x, y)) {
-            disableConnectingLines = true;
-            Context::getInstance()->setDrawConnectingLines(false);
-        }
-        break;
-    case Constants::DELETE_VERTEX_MODE:
-        if (Context::getInstance()->getFileReader().removeVertex(Context::getInstance()->getSelectedPolygon(), selectedVertexIndex, x, y)) {
-            disableConnectingLines = true;
-            Context::getInstance()->setDrawConnectingLines(false);
-        }
-        break;
-    case Constants::EDIT_MODE:
-        //Context::getInstance()->getFileReader().insertVertex(i, x, y);
-        break;
-    case Constants::NORMAL_MODE:
-        break;
-    default:
-        break;
+        case Constants::ADD_VERTEX_MODE:
+            if (Context::getInstance()->getFileReader().insertVertex(Context::getInstance()->getSelectedPolygon(), x, y)) {
+                disableConnectingLines = true;
+                Context::getInstance()->setDrawConnectingLines(false);
+            }
+            break;
+        case Constants::DELETE_VERTEX_MODE:
+            if (Context::getInstance()->getFileReader().removeVertex(Context::getInstance()->getSelectedPolygon(), selectedVertexIndex, x, y)) {
+                disableConnectingLines = true;
+                Context::getInstance()->setDrawConnectingLines(false);
+            }
+            break;
+        case Constants::EDIT_MODE:
+            //Context::getInstance()->getFileReader().insertVertex(i, x, y);
+            break;
+        case Constants::NORMAL_MODE:
+            break;
+        default:
+            break;
     }
 
     emit hadMousePress(x, y, disableConnectingLines);
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
-    if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE || Context::getInstance()->getEditMode() == Constants::ADD_VERTEX_MODE) {
+    if (Context::getInstance()->getEditMode() == Constants::EDIT_MODE || Context::getInstance()->getEditMode() == Constants::MOVE_MODE || Context::getInstance()->getEditMode() == Constants::ADD_VERTEX_MODE) {
         Context::getInstance()->setDrawConnectingLines(false);
         int selectedVertexIndex = Context::getInstance()->getFileReader().hasVertex(Context::getInstance()->getSelectedPolygon(), event->x(), this->flipY(event->y(), height()));
 
-        if ( Context::getInstance()->isPolygonSelected() && selectedVertexIndex > -1) {
+        if ( Context::getInstance()->isPolygonSelected()) {
             //qDebug() << "clicked on the vertex";
-            Context::getInstance()->getFileReader().updateSelectedPolygonVertex(Context::getInstance()->getSelectedPolygon() ,selectedVertexIndex, event->x(), this->flipY(event->y(), height()));
-            //Context::getInstance()->reset();
+            if (Context::getInstance()->getEditMode() == Constants::MOVE_MODE) {
+                double deltaX = Context::getInstance()->getCurrentX() - event->x();
+                double deltaY = Context::getInstance()->getCurrentY() - this->flipY(event->y(), height());
+                Context::getInstance()->getFileReader().movePolygon(Context::getInstance()->getSelectedPolygon(), deltaX, deltaY);
+                Context::getInstance()->setCurrentX(Context::getInstance()->getCurrentX() - deltaX);
+                Context::getInstance()->setCurrentY(Context::getInstance()->getCurrentY() - deltaY);
+            } else if (selectedVertexIndex > -1) {
+                Context::getInstance()->getFileReader().updateSelectedPolygonVertex(Context::getInstance()->getSelectedPolygon() ,selectedVertexIndex, event->x(), this->flipY(event->y(), height()));
+            }
             this->update();
+
         }
         emit hadMouseMove(event->x(), this->flipY(event->y(), height()));
     }

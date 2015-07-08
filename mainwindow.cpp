@@ -23,6 +23,7 @@ void MainWindow::initializeEditModes() {
     this->ui->editModeComboBox->addItem("Edit");
     this->ui->editModeComboBox->addItem("Add Vertex");
     this->ui->editModeComboBox->addItem("Delete Vertex");
+    this->ui->editModeComboBox->addItem("Move Polygon");
 
     this->ui->editModeComboBox->setCurrentIndex(0);
 }

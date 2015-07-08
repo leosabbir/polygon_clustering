@@ -78,6 +78,23 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
     }
 }
 
+void InputFileReader::movePolygon(int selectedPolygon, double deltaX, double deltaY) {
+    int i = 0;
+    for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
+        if ( i != selectedPolygon ) {
+            i++;
+            continue;
+        }
+
+        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+            double currentX = CGAL::to_double((*vertexIterator).x());
+            double currentY = CGAL::to_double((*vertexIterator).y());
+            (*polygonIterator).set(vertexIterator, *(new CustomPoint(currentX - deltaX, currentY - deltaY)));
+        }
+        return;
+    }
+}
+
 void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {

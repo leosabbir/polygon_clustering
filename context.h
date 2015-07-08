@@ -21,6 +21,10 @@ public:
     void setEditMode(int editMode);
     void setDrawConnectingLines(bool drawConnectingLines);
     bool isDrawConnectingLines();
+    double getCurrentX();
+    double getCurrentY();
+    void setCurrentX(double x);
+    void setCurrentY(double y);
 
 
 private:
@@ -34,6 +38,8 @@ private:
     int threshold;
     int editMode;
     bool drawConnectingLines;
+    double currentX;
+    double currentY;
 
 };
 

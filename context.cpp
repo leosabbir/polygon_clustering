@@ -64,7 +64,7 @@ int Context::getEditMode() {
 }
 
 void Context::setEditMode(int editMode) {
-    if (editMode < Constants::NORMAL_MODE || editMode > Constants::DELETE_VERTEX_MODE) {
+    if (editMode < Constants::NORMAL_MODE || editMode > Constants::MOVE_MODE) {
         throw std::invalid_argument("Invalid Edit Mode");
     }
     this->editMode = editMode;
@@ -76,4 +76,20 @@ void Context::setDrawConnectingLines(bool drawConnectingLines) {
 
 bool Context::isDrawConnectingLines() {
     return this->drawConnectingLines;
+}
+
+double Context::getCurrentX() {
+    return this->currentX;
+}
+
+double Context::getCurrentY() {
+    return this->currentY;
+}
+
+void Context::setCurrentX(double x) {
+    this->currentX = x;
+}
+
+void Context::setCurrentY(double y) {
+    this->currentY = y;
 }

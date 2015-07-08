@@ -17,6 +17,7 @@ public:
     static const int EDIT_MODE = 1;
     static const int ADD_VERTEX_MODE = 2;
     static const int DELETE_VERTEX_MODE = 3;
+    static const int MOVE_MODE = 4;
 };
 
 #endif // CONSTANTS_H
