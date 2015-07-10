@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     context.cpp \
     polygonsintersectionfinder.cpp \
     constants.cpp \
-    utils.cpp
+    utils.cpp \
+    weightedquickunionuf.cpp \
+    convexhullcomputationutil.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     context.h \
     polygonsintersectionfinder.h \
     constants.h \
-    utils.h
+    utils.h \
+    weightedquickunionuf.h \
+    convexhullcomputationutil.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/
@@ -51,6 +55,7 @@ LIBS        += -DBOOST_LOG_DYN_LINK
 LIBS        += -lboost_thread
 LIBS        += -lpthread
 QMAKE_CXXFLAGS += -frounding-math -O3
+QMAKE_CXXFLAGS += -std=c++11
 
 FORMS    += mainwindow.ui
 

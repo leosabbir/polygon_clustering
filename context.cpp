@@ -1,6 +1,7 @@
 #include "context.h"
 #include "constants.h"
 #include <iostream>
+#include "weightedquickunionuf.h"
 
 Context *(Context::context) = NULL;
 
@@ -12,6 +13,7 @@ Context::Context()
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), Constants::INITIAL_THRESHOLD);
+    this->convexHullComputationUtil = new ConvexHullComputationUtil();
     this->selectedPolygon = -1;
     this->threshold = Constants::INITIAL_THRESHOLD;
     this->editMode = Constants::DELETE_VERTEX_MODE;
@@ -49,6 +51,19 @@ void Context::reComputeConnectingLines(int threshold) {
 
 int Context::getSelectedPolygon() {
     return this->selectedPolygon;
+}
+
+WeightedQuickUnionUF* Context::getPolygonsUnionFind() {
+    return this->polygonsUnionFind;
+}
+
+void Context::resetPolygonsUnionFind(int n) {
+    //delete this->polygonsUnionFind;
+    this->polygonsUnionFind = new WeightedQuickUnionUF(n);
+}
+
+ConvexHullComputationUtil* Context::getConvexHullComputationalUtil() {
+    return this->convexHullComputationUtil;
 }
 
 void Context::setSelectedPolygon(int selectedPolygonIndex) {

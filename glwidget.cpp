@@ -67,6 +67,8 @@ void GLWidget::paintGL() {
 
     /***Draw Connecting Lines***/
     if (Context::getInstance()->isDrawConnectingLines()) {
+        std::vector<std::vector<PointForConvexHull> > results;
+        //Context::getInstance()->getConvexHullComputationalUtil()->compute(Context::getInstance()->getFileReader().constructPolygons(), results);
         glColor3f(0, 1, 0);
         glLineWidth(1);
         QList<CustomeLine>::iterator linesIterator;

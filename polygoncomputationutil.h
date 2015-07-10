@@ -7,6 +7,7 @@
 #include "custompoint.h"
 #include "customeline.h"
 #include "custompolygon.h"
+#include "weightedquickunionuf.h"
 
 class PolygonComputationUtil
 {
