@@ -10,7 +10,8 @@ QList<CustomeLine>* PolygonComputationUtil::computeAllOptimumDistances(QList<Cus
     QList<CustomeLine> *connectingLines;
     connectingLines = new QList<CustomeLine>();
 
-    //Context::getInstance()->resetPolygonsUnionFind(polygons.size()); // polygons.size());
+    Context::getInstance()->resetPolygonsUnionFind(polygons.size()); // polygons.size());
+    qDebug() << "No of polygons " << polygons.size();
     for(int i = 0; i < polygons.size()-1; i++) {
         for ( int j = i+1; j < polygons.size(); j++) {
             CustomeLine *connectingLine = polygons.at(i).computeDistance(polygons.at(j));

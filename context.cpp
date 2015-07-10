@@ -12,12 +12,13 @@ Context::Context()
     //this->fileReader->constructPolygons();
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);
-    this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), Constants::INITIAL_THRESHOLD);
+    this->fileReader->constructPolygons();
+    //this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), Constants::INITIAL_THRESHOLD);
     this->convexHullComputationUtil = new ConvexHullComputationUtil();
     this->selectedPolygon = -1;
     this->threshold = Constants::INITIAL_THRESHOLD;
     this->editMode = Constants::DELETE_VERTEX_MODE;
-    this->drawConnectingLines = true;
+    this->drawConnectingLines = false;
 }
 
 void Context::reset() {
@@ -58,7 +59,7 @@ WeightedQuickUnionUF* Context::getPolygonsUnionFind() {
 }
 
 void Context::resetPolygonsUnionFind(int n) {
-    //delete this->polygonsUnionFind;
+    delete this->polygonsUnionFind;
     this->polygonsUnionFind = new WeightedQuickUnionUF(n);
 }
 

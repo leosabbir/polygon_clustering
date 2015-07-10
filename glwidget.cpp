@@ -68,7 +68,7 @@ void GLWidget::paintGL() {
     /***Draw Connecting Lines***/
     if (Context::getInstance()->isDrawConnectingLines()) {
         std::vector<std::vector<PointForConvexHull> > results;
-        //Context::getInstance()->getConvexHullComputationalUtil()->compute(Context::getInstance()->getFileReader().constructPolygons(), results);
+        Context::getInstance()->getConvexHullComputationalUtil()->compute(Context::getInstance()->getFileReader().constructPolygons(), results);
         glColor3f(0, 1, 0);
         glLineWidth(1);
         QList<CustomeLine>::iterator linesIterator;
@@ -84,6 +84,20 @@ void GLWidget::paintGL() {
                 x = CGAL::to_double(line.getP().x());
                 y = CGAL::to_double(line.getP().y());
                 glVertex2d(transformX(x, width), transformY(y, height));
+            glEnd();
+        }
+
+        for (std::vector<vector<PointForConvexHull> >::iterator it = results.begin(); it != results.end(); ++it) {
+            //qDebug() << "SIZE " << (*it).size();
+            glColor3f(0, 1, 1);
+            glBegin(GL_LINE_LOOP);
+            for (std::vector<PointForConvexHull>::iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2) {
+                double x = (*it2).x();
+                double y = (*it2).y();
+                qDebug() << x << " " << y;//(*it).size();
+                //glVertex2d(transformX(x, width), transformY(y, height));
+                glVertex2d(x, y);
+            }
             glEnd();
         }
     }
