@@ -28,6 +28,8 @@ public:
 
     void getSelectedPolygon(double x, double y);
 
+    void pushVertexToNewPolygon(double x, double y);
+
 signals:
     void hadMousePress(int x, int y, bool disableConnectingLines);
 
@@ -35,6 +37,8 @@ signals:
 
 private:
     CustomPolygon selectedPolygon;
+    CustomPolygon *newPolygon;
+    double oldX, oldY;
 
 };
 

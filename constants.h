@@ -18,6 +18,7 @@ public:
     static const int ADD_VERTEX_MODE = 2;
     static const int DELETE_VERTEX_MODE = 3;
     static const int MOVE_MODE = 4;
+    static const int CREATE_POLYGONS_MODE = 5;
 };
 
 #endif // CONSTANTS_H

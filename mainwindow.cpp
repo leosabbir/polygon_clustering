@@ -62,3 +62,19 @@ void MainWindow::onMouseMoveEvent(int x, int y) {
 void MainWindow::on_editModeComboBox_currentIndexChanged(int index) {
     Context::getInstance()->setEditMode(index);
 }
+
+void MainWindow::on_createBtn_released() {
+    if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE) {
+        this->ui->createBtn->setText("Create");
+        Context::getInstance()->setEditMode(this->ui->editModeComboBox->currentIndex());
+        this->ui->applyBtn->setEnabled(true);
+        this->ui->editModeComboBox->setEnabled(true);
+        this->ui->thresholdSlider->setEnabled(true);
+    } else {
+        Context::getInstance()->setEditMode(Constants::CREATE_POLYGONS_MODE);
+        this->ui->createBtn->setText("Done");
+        this->ui->applyBtn->setEnabled(false);
+        this->ui->editModeComboBox->setEnabled(false);
+        this->ui->thresholdSlider->setEnabled(false);
+    }
+}

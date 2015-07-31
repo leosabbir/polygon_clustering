@@ -58,6 +58,10 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
     return *(this->polygonsFromFile);
 }
 
+void InputFileReader::insertPolygon(CustomPolygon polygon) {
+    this->polygonsFromFile->append(polygon);
+}
+
 void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {

@@ -34,6 +34,8 @@ private slots:
 
     void on_editModeComboBox_currentIndexChanged(int index);
 
+    void on_createBtn_released();
+
 private:
     Ui::MainWindow *ui;
 };

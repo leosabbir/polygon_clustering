@@ -9,6 +9,7 @@ class InputFileReader {
     public:
         InputFileReader();
         QList<CustomPolygon> constructPolygons();
+        void insertPolygon(CustomPolygon polygon);
         void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
         void movePolygon(int selectedPolygon, double deltaX, double deltaY);
         bool insertVertex(int selectedPolygon, double x, double y);

@@ -11,6 +11,7 @@
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
     Constants::WIDTH = this->size().width();
     Constants::HEIGHT = this->size().height();
+    this->newPolygon = NULL;
     //this->selectedPolygon = NULL;
     //setMouseTracking(true); // if this is set, then mouse movement will be tracked even if not pressed
 }
@@ -64,6 +65,19 @@ void GLWidget::paintGL() {
         }
     }
     /****/
+
+    /*******/
+    if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
+        glColor3f(1, 1, 1);
+        glEnable(GL_POINT_SMOOTH);
+        glPointSize(3.0);
+        glBegin(GL_POINTS);
+        for ( Vertex_iterator vertexIterator = this->newPolygon->vertices_begin(); vertexIterator != this->newPolygon->vertices_end(); vertexIterator++) {
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+        }
+        glEnd();
+    }
+    /*******/
 
     /***Draw Connecting Lines***/
     if (Context::getInstance()->isDrawConnectingLines()) {
@@ -135,11 +149,34 @@ void GLWidget::mousePressEvent(QMouseEvent *event){
             break;
         case Constants::NORMAL_MODE:
             break;
+        case Constants::CREATE_POLYGONS_MODE:
+            this->pushVertexToNewPolygon(x, y);
+            break;
         default:
             break;
     }
 
     emit hadMousePress(x, y, disableConnectingLines);
+}
+
+void GLWidget::pushVertexToNewPolygon(double x, double y) {
+    bool first = false;
+    if (this->newPolygon == NULL) {
+        this->newPolygon = new CustomPolygon();
+        first = true;
+    }
+    if ( x >= oldX - Constants::DELTA && x <= oldX + Constants::DELTA &&
+          y >= oldY - Constants::DELTA && y <= oldY + Constants::DELTA) {
+         Context::getInstance()->getFileReader().insertPolygon(*(this->newPolygon));
+         this->newPolygon = NULL;
+    } else {
+        this->newPolygon->push_back(*(new Point(x, y)));
+
+    if (first) {
+    oldX = x;
+    oldY = y;
+    }
+}
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
