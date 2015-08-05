@@ -5,10 +5,11 @@
 #include "custompolygon.h"
 #include <QtGui>
 
-class InputFileReader {
+class PolygonsReadWriteUtil {
     public:
-        InputFileReader();
+        PolygonsReadWriteUtil();
         QList<CustomPolygon> constructPolygons();
+        void savePolygons(QString fileName);
         void insertPolygon(CustomPolygon polygon);
         void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
         void movePolygon(int selectedPolygon, double deltaX, double deltaY);

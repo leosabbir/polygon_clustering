@@ -1,14 +1,14 @@
-#include "inputfilereader.h"
+#include "polygonsreadwriteutil.h"
 #include <istream>
 
-const QString InputFileReader::INPUTFILEPATH = ":/resources/input.txt";
+const QString PolygonsReadWriteUtil::INPUTFILEPATH = "/home/voldemort/Documents/sources/cluster_polygon/resources/input.txt"; //:/resources/input.txt";
 
-InputFileReader::InputFileReader() {
+PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
     file = new QFile(this->INPUTFILEPATH);
     this->polygonsFromFile = NULL;
 }
 
-QList<CustomPolygon> InputFileReader::constructPolygons() {
+QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
     if ( (this->polygonsFromFile) != NULL ) {
         return *(this->polygonsFromFile);
     }
@@ -58,11 +58,11 @@ QList<CustomPolygon> InputFileReader::constructPolygons() {
     return *(this->polygonsFromFile);
 }
 
-void InputFileReader::insertPolygon(CustomPolygon polygon) {
+void PolygonsReadWriteUtil::insertPolygon(CustomPolygon polygon) {
     this->polygonsFromFile->append(polygon);
 }
 
-void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
+void PolygonsReadWriteUtil::updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
         if ( i != selectedPolygon ) {
@@ -82,7 +82,7 @@ void InputFileReader::updateSelectedPolygonVertex(int selectedPolygon, int selec
     }
 }
 
-void InputFileReader::movePolygon(int selectedPolygon, double deltaX, double deltaY) {
+void PolygonsReadWriteUtil::movePolygon(int selectedPolygon, double deltaX, double deltaY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
         if ( i != selectedPolygon ) {
@@ -99,7 +99,7 @@ void InputFileReader::movePolygon(int selectedPolygon, double deltaX, double del
     }
 }
 
-void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
+void PolygonsReadWriteUtil::insertCGALVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
         if ( i != selectedPolygon ) {
@@ -129,7 +129,7 @@ void InputFileReader::insertCGALVertex(int selectedPolygon, int selectedVertexIn
     }
 }
 
-bool InputFileReader::removeVertex(int selectedPolygon, int selectedVertexIndex, double x, double y) {
+bool PolygonsReadWriteUtil::removeVertex(int selectedPolygon, int selectedVertexIndex, double x, double y) {
     int i = 0;
     for ( QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
         if ( i != selectedPolygon ) {
@@ -149,7 +149,7 @@ bool InputFileReader::removeVertex(int selectedPolygon, int selectedVertexIndex,
     }
 }
 
-int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {// can anything be done ??
+int PolygonsReadWriteUtil::hasVertex(int selectedPolygon, double x, double y) {// can anything be done ??
     int index = 0;
     for(QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end(); polygonIterator++) {
         if (index == selectedPolygon) {
@@ -171,7 +171,7 @@ int InputFileReader::hasVertex(int selectedPolygon, double x, double y) {// can 
     return -1;
 }
 
-bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
+bool PolygonsReadWriteUtil::insertVertex(int selectedPolygon, double x, double y) {
     int index = 0;
     for(QList<CustomPolygon>::iterator polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end(); polygonIterator++) {
         if (index == selectedPolygon) {
@@ -224,4 +224,8 @@ bool InputFileReader::insertVertex(int selectedPolygon, double x, double y) {
         index++;
     }
     return false;
+}
+
+void PolygonsReadWriteUtil::savePolygons(QString fileName) {
+
 }

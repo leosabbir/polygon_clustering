@@ -4,7 +4,7 @@
 #include <QList>
 #include <QPoint>
 #include <dummydata.h>
-#include "inputfilereader.h"
+#include "polygonsreadwriteutil.h"
 #include "context.h"
 #include "customeline.h"
 

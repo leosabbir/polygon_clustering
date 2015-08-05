@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "context.h"
 #include "constants.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -77,4 +78,16 @@ void MainWindow::on_createBtn_released() {
         this->ui->editModeComboBox->setEnabled(false);
         this->ui->thresholdSlider->setEnabled(false);
     }
+}
+
+void MainWindow::on_openBtn_released() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
+
+    qDebug() << fileName;
+}
+
+void MainWindow::on_saveBtn_released() {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
+
+    qDebug() << fileName;
 }

@@ -1,7 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#include "inputfilereader.h"
+#include "polygonsreadwriteutil.h"
 #include "polygoncomputationutil.h"
 #include "polygonsintersectionfinder.h"
 #include "weightedquickunionuf.h"
@@ -12,7 +12,7 @@ class Context
 public:
     static Context* getInstance();
     void reset();
-    InputFileReader getFileReader();
+    PolygonsReadWriteUtil getFileReader();
     QList<CustomeLine> getConnectingLines();
     void reComputeConnectingLines(int threshold);
     PolygonsIntersectionFinder getCgalUtility();
@@ -36,7 +36,7 @@ private:
     Context();
     static Context *context;
     QList<CustomeLine> *connectingLines;
-    InputFileReader *fileReader;
+    PolygonsReadWriteUtil *fileReader;
     PolygonComputationUtil *polygonComputationUtil;
     PolygonsIntersectionFinder *cgalUtility;
     WeightedQuickUnionUF *polygonsUnionFind;

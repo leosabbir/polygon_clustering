@@ -36,6 +36,10 @@ private slots:
 
     void on_createBtn_released();
 
+    void on_openBtn_released();
+
+    void on_saveBtn_released();
+
 private:
     Ui::MainWindow *ui;
 };

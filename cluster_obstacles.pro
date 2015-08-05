@@ -21,13 +21,13 @@ SOURCES += main.cpp\
     customeline.cpp \
     custompolygon.cpp \
     polygoncomputationutil.cpp \
-    inputfilereader.cpp \
     context.cpp \
     polygonsintersectionfinder.cpp \
     constants.cpp \
     utils.cpp \
     weightedquickunionuf.cpp \
-    convexhullcomputationutil.cpp
+    convexhullcomputationutil.cpp \
+    polygonsreadwriteutil.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -37,13 +37,13 @@ HEADERS  += mainwindow.h \
     customeline.h \
     custompolygon.h \
     polygoncomputationutil.h \
-    inputfilereader.h \
     context.h \
     polygonsintersectionfinder.h \
     constants.h \
     utils.h \
     weightedquickunionuf.h \
-    convexhullcomputationutil.h
+    convexhullcomputationutil.h \
+    polygonsreadwriteutil.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/
