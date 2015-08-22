@@ -227,5 +227,22 @@ bool PolygonsReadWriteUtil::insertVertex(int selectedPolygon, double x, double y
 }
 
 void PolygonsReadWriteUtil::savePolygons(QString fileName) {
+    QFile *outputFile = new QFile(fileName);
 
+    if ( outputFile->open(QIODevice::ReadWrite) ) {
+        QList<CustomPolygon>::iterator polygonIterator;
+        QTextStream stream( outputFile );
+
+        for ( polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
+            for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+                double x = CGAL::to_double((*vertexIterator).x());
+                double y = CGAL::to_double((*vertexIterator).y());
+
+                stream << x << " " << y << " ";
+            }
+            stream << endl;
+         }
+    } else {
+        qDebug() << "Error Opening the file: " << fileName;
+    }
 }

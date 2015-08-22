@@ -88,6 +88,6 @@ void MainWindow::on_openBtn_released() {
 
 void MainWindow::on_saveBtn_released() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
-
+    Context::getInstance()->getFileReader().savePolygons(fileName);
     qDebug() << fileName;
 }
