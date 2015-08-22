@@ -10,6 +10,7 @@ class PolygonsReadWriteUtil {
         PolygonsReadWriteUtil();
         QList<CustomPolygon> constructPolygons();
         void savePolygons(QString fileName);
+        void loadPolygons(QString fileName);
         void insertPolygon(CustomPolygon polygon);
         void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
         void movePolygon(int selectedPolygon, double deltaX, double deltaY);

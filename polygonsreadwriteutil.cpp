@@ -59,6 +59,9 @@ QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
 }
 
 void PolygonsReadWriteUtil::insertPolygon(CustomPolygon polygon) {
+    if (polygon.is_clockwise_oriented()) {
+        polygon.reverse_orientation();
+    }
     this->polygonsFromFile->append(polygon);
 }
 
@@ -241,8 +244,17 @@ void PolygonsReadWriteUtil::savePolygons(QString fileName) {
                 stream << x << " " << y << " ";
             }
             stream << endl;
-         }
+        }
+        stream.flush();
+        outputFile->close();
     } else {
         qDebug() << "Error Opening the file: " << fileName;
     }
+}
+
+void PolygonsReadWriteUtil::loadPolygons(QString fileName) {
+    this->file->close();
+    this->file = new QFile(fileName);
+    this->polygonsFromFile = NULL;
+    this->constructPolygons();
 }

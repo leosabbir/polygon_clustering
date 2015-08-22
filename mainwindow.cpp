@@ -82,7 +82,8 @@ void MainWindow::on_createBtn_released() {
 
 void MainWindow::on_openBtn_released() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
-
+    Context::getInstance()->getFileReader().loadPolygons(fileName);
+    this->ui->maincontainer->paintGL();
     qDebug() << fileName;
 }
 
