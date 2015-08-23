@@ -1,19 +1,36 @@
 #include "polygonsreadwriteutil.h"
 #include <istream>
 
-const QString PolygonsReadWriteUtil::INPUTFILEPATH = "/home/voldemort/Documents/sources/cluster_polygon/resources/input.txt"; //:/resources/input.txt";
+const QString PolygonsReadWriteUtil::INPUTFILEPATH = ":/resources/input.txt";
+
+PolygonsReadWriteUtil *(PolygonsReadWriteUtil::INSTANCE) = NULL;
+
+PolygonsReadWriteUtil* PolygonsReadWriteUtil::getInstance() {
+    if (PolygonsReadWriteUtil::INSTANCE == NULL) {
+        PolygonsReadWriteUtil::INSTANCE = new PolygonsReadWriteUtil();
+    }
+    return PolygonsReadWriteUtil::INSTANCE;
+}
 
 PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
-    file = new QFile(this->INPUTFILEPATH);
+
     this->polygonsFromFile = NULL;
 }
 
 QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
-    if ( (this->polygonsFromFile) != NULL ) {
-        return *(this->polygonsFromFile);
+    if ( (this->polygonsFromFile) == NULL) {
+        this->polygonsFromFile = new QList<CustomPolygon>();
+        this->construct(this->INPUTFILEPATH);
+        //return *(this->polygonsFromFile);
     }
-    this->polygonsFromFile = new QList<CustomPolygon>();
 
+    return *(this->polygonsFromFile);
+}
+
+void PolygonsReadWriteUtil::construct(QString filePath) {
+
+    QFile *file;
+    file = new QFile(filePath);
     if (file->open(QIODevice::ReadOnly)) {
        QTextStream in(file);
        while (!in.atEnd())
@@ -48,14 +65,12 @@ QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
           if (cgalPolygon->is_clockwise_oriented()) {
               cgalPolygon->reverse_orientation();
           }
-          polygonsFromFile->append(*cgalPolygon);
+          this->polygonsFromFile->append(*cgalPolygon);
        }
        file->close();
     } else {
         std::cout << "file could not be read" << std::endl;
     }
-
-    return *(this->polygonsFromFile);
 }
 
 void PolygonsReadWriteUtil::insertPolygon(CustomPolygon polygon) {
@@ -236,6 +251,7 @@ void PolygonsReadWriteUtil::savePolygons(QString fileName) {
         QList<CustomPolygon>::iterator polygonIterator;
         QTextStream stream( outputFile );
 
+        qDebug() << "Saving into the file: " << fileName;
         for ( polygonIterator = this->polygonsFromFile->begin(); polygonIterator != this->polygonsFromFile->end() ; polygonIterator++) {
             for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
                 double x = CGAL::to_double((*vertexIterator).x());
@@ -253,8 +269,12 @@ void PolygonsReadWriteUtil::savePolygons(QString fileName) {
 }
 
 void PolygonsReadWriteUtil::loadPolygons(QString fileName) {
-    this->file->close();
-    this->file = new QFile(fileName);
-    this->polygonsFromFile = NULL;
-    this->constructPolygons();
+    //this->file->close();
+    //delete this->file;
+    //delete this->polygonsFromFile;
+    qDebug() << "Loading the file: " << fileName;
+    //this->file = new QFile(fileName);
+    this->polygonsFromFile->clear();
+    //this->polygonsFromFile = NULL;
+    this->construct(fileName);
 }

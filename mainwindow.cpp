@@ -83,12 +83,12 @@ void MainWindow::on_createBtn_released() {
 void MainWindow::on_openBtn_released() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
     Context::getInstance()->getFileReader().loadPolygons(fileName);
+    Context::getInstance()->setDrawConnectingLines(false);
     this->ui->maincontainer->paintGL();
-    qDebug() << fileName;
+    this->ui->maincontainer->update();
 }
 
 void MainWindow::on_saveBtn_released() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
     Context::getInstance()->getFileReader().savePolygons(fileName);
-    qDebug() << fileName;
 }
