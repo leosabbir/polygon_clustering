@@ -8,7 +8,7 @@ Context *(Context::context) = NULL;
 Context::Context()
 {
     this->polygonComputationUtil = new PolygonComputationUtil();
-    this->fileReader = PolygonsReadWriteUtil::getInstance();
+    this->fileReader = new PolygonsReadWriteUtil();
     //this->fileReader->constructPolygons();
     //this->connectingLines = new QList<CustomeLine>();
     //QList<CustomeLine>* xx = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), 500.0);

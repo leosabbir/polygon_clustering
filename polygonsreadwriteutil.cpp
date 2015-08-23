@@ -3,17 +3,7 @@
 
 const QString PolygonsReadWriteUtil::INPUTFILEPATH = ":/resources/input.txt";
 
-PolygonsReadWriteUtil *(PolygonsReadWriteUtil::INSTANCE) = NULL;
-
-PolygonsReadWriteUtil* PolygonsReadWriteUtil::getInstance() {
-    if (PolygonsReadWriteUtil::INSTANCE == NULL) {
-        PolygonsReadWriteUtil::INSTANCE = new PolygonsReadWriteUtil();
-    }
-    return PolygonsReadWriteUtil::INSTANCE;
-}
-
 PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
-
     this->polygonsFromFile = NULL;
 }
 

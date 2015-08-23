@@ -7,7 +7,7 @@
 
 class PolygonsReadWriteUtil {
     public:
-        static PolygonsReadWriteUtil* getInstance();
+        PolygonsReadWriteUtil();
         QList<CustomPolygon> constructPolygons();
         void construct(QString filePath);
         void savePolygons(QString fileName);
@@ -22,8 +22,6 @@ class PolygonsReadWriteUtil {
 
 
     private:
-        PolygonsReadWriteUtil();
-        static PolygonsReadWriteUtil *INSTANCE;
         static const  QString INPUTFILEPATH;
 
         QList<CustomPolygon> *polygonsFromFile;
