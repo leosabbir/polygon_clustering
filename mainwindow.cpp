@@ -81,7 +81,10 @@ void MainWindow::on_createBtn_released() {
 }
 
 void MainWindow::on_openBtn_released() {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), ":/resources/", "All files (*.*);;Text File(*.txt)");
+    if(fileName.isEmpty()) {
+        return;
+    }
     Context::getInstance()->getFileReader().loadPolygons(fileName);
     Context::getInstance()->setDrawConnectingLines(false);
     this->ui->maincontainer->paintGL();
@@ -89,6 +92,20 @@ void MainWindow::on_openBtn_released() {
 }
 
 void MainWindow::on_saveBtn_released() {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ".", "All files (*.*);;Text File(*.txt)");
+    Context::getInstance()->getFileReader().savePolygons();
+}
+
+void MainWindow::on_saveasBtn_released() {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ":/resources/", "All files (*.*);;Text File(*.txt)");
+    if(fileName.isEmpty()) {
+        return;
+    }
     Context::getInstance()->getFileReader().savePolygons(fileName);
+}
+
+void MainWindow::on_clearBtn_released() {
+    Context::getInstance()->getFileReader().clear();
+    Context::getInstance()->setDrawConnectingLines(false);
+    this->ui->maincontainer->paintGL();
+    this->ui->maincontainer->update();
 }

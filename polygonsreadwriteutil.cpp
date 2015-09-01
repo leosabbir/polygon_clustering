@@ -1,16 +1,17 @@
 #include "polygonsreadwriteutil.h"
 #include <istream>
 
-const QString PolygonsReadWriteUtil::INPUTFILEPATH = ":/resources/input.txt";
+const QString PolygonsReadWriteUtil::INPUTFILEPATH = "/home/sabbir/Documents/sources/cluster_polygon/resources/input.txt";//":/resources/input.txt";
 
 PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
     this->polygonsFromFile = NULL;
+    this->currentFile = new QString(INPUTFILEPATH);
 }
 
 QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
     if ( (this->polygonsFromFile) == NULL) {
         this->polygonsFromFile = new QList<CustomPolygon>();
-        this->construct(this->INPUTFILEPATH);
+        this->construct(*(this->currentFile));
         //return *(this->polygonsFromFile);
     }
 
@@ -18,7 +19,7 @@ QList<CustomPolygon> PolygonsReadWriteUtil::constructPolygons() {
 }
 
 void PolygonsReadWriteUtil::construct(QString filePath) {
-
+    this->polygonsFromFile->clear();
     QFile *file;
     file = new QFile(filePath);
     if (file->open(QIODevice::ReadOnly)) {
@@ -61,6 +62,8 @@ void PolygonsReadWriteUtil::construct(QString filePath) {
     } else {
         std::cout << "file could not be read" << std::endl;
     }
+    qDebug() << filePath;
+    qDebug() << *(this->currentFile);
 }
 
 void PolygonsReadWriteUtil::insertPolygon(CustomPolygon polygon) {
@@ -234,10 +237,15 @@ bool PolygonsReadWriteUtil::insertVertex(int selectedPolygon, double x, double y
     return false;
 }
 
+void PolygonsReadWriteUtil::savePolygons() {
+    qDebug() << "Current file is " << this->currentFile;
+    this->savePolygons(*(this->currentFile));
+}
+
 void PolygonsReadWriteUtil::savePolygons(QString fileName) {
     QFile *outputFile = new QFile(fileName);
 
-    if ( outputFile->open(QIODevice::ReadWrite) ) {
+    if ( outputFile->open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text) ) {
         QList<CustomPolygon>::iterator polygonIterator;
         QTextStream stream( outputFile );
 
@@ -258,13 +266,20 @@ void PolygonsReadWriteUtil::savePolygons(QString fileName) {
     }
 }
 
+void PolygonsReadWriteUtil::clear() {
+    this->polygonsFromFile->clear();
+}
+
 void PolygonsReadWriteUtil::loadPolygons(QString fileName) {
     //this->file->close();
     //delete this->file;
     //delete this->polygonsFromFile;
-    qDebug() << "Loading the file: " << fileName;
+    this->currentFile->clear();
+    this->currentFile->append(fileName);
+    //this->currentFile = *(new QString(fileName));
+    qDebug() << "Loading the file: " << this->currentFile;
     //this->file = new QFile(fileName);
     this->polygonsFromFile->clear();
     //this->polygonsFromFile = NULL;
-    this->construct(fileName);
+    this->construct(*(this->currentFile));
 }

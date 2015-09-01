@@ -40,6 +40,10 @@ private slots:
 
     void on_saveBtn_released();
 
+    void on_saveasBtn_released();
+
+    void on_clearBtn_released();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -11,7 +11,9 @@ class PolygonsReadWriteUtil {
         QList<CustomPolygon> constructPolygons();
         void construct(QString filePath);
         void savePolygons(QString fileName);
+        void savePolygons();
         void loadPolygons(QString fileName);
+        void clear();
         void insertPolygon(CustomPolygon polygon);
         void updateSelectedPolygonVertex(int selectedPolygon, int selectedVertexIndex, double newX, double newY);
         void movePolygon(int selectedPolygon, double deltaX, double deltaY);
@@ -25,6 +27,7 @@ class PolygonsReadWriteUtil {
         static const  QString INPUTFILEPATH;
 
         QList<CustomPolygon> *polygonsFromFile;
+        QString *currentFile;
 };
 
 #endif // INPUTFILEREADER_H
