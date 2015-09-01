@@ -7,6 +7,9 @@ ConvexHullComputationUtil::ConvexHullComputationUtil() {
 }
 
 void ConvexHullComputationUtil::compute(QList<CustomPolygon> polygons, std::vector<std::vector<PointForConvexHull> > &results) {
+    if (polygons.size() == 0) {
+        return;
+    }
     unordered_map<int, list<int> > components = Context::getInstance()->getPolygonsUnionFind()->getComponents();
     for (auto it = components.begin(); it != components.end(); ++it) {
         //qDebug() << "size : " << (it->second).size() << " ";
