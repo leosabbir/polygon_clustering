@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     utils.cpp \
     weightedquickunionuf.cpp \
     convexhullcomputationutil.cpp \
-    polygonsreadwriteutil.cpp
+    polygonsreadwriteutil.cpp \
+    polygoninnervertices.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     utils.h \
     weightedquickunionuf.h \
     convexhullcomputationutil.h \
-    polygonsreadwriteutil.h
+    polygonsreadwriteutil.h \
+    polygoninnervertices.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/

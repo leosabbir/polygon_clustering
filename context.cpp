@@ -19,6 +19,7 @@ Context::Context()
     this->threshold = Constants::INITIAL_THRESHOLD;
     this->editMode = Constants::DELETE_VERTEX_MODE;
     this->drawConnectingLines = false;
+    this->polygonsPoints = NULL;
 }
 
 void Context::reset() {
@@ -48,6 +49,35 @@ void Context::reComputeConnectingLines(int threshold) {
     std::cout << "recomputing" << std::endl;
     this->threshold = threshold;
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold);
+}
+
+//MOVE computation to different place
+QList<CustomPoint> Context::computePointsForClustering() {
+    if (this->polygonsPoints == NULL) {
+        this->polygonsPoints = new QList<CustomPoint>();
+    } else {
+        this->polygonsPoints->clear();
+    }
+
+    QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
+
+    int i = 0;
+    for (QList<CustomPolygon>::iterator iter = polygons.begin(); iter != polygons.end(); iter++, i++) {
+        double xmax = (*iter).bbox().xmax();
+        double xmin = (*iter).bbox().xmin();
+        double ymax = (*iter).bbox().ymax();
+        double ymin = (*iter).bbox().ymin();
+        for(double x = xmin; x <= xmax; x += Constants::DELTA_FOR_POINTS_CLUSTERING) {
+            for(double y = ymin; y <= ymax; y += Constants::DELTA_FOR_POINTS_CLUSTERING) {
+                CGAL::Bounded_side positionOfPointInPolygon = Context::getInstance()->getCgalUtility().getPointLocationOnPolygon(*iter, x, y);
+                if(positionOfPointInPolygon != CGAL::ON_UNBOUNDED_SIDE) {
+                    this->polygonsPoints->append(*(new CustomPoint(x, y)));
+                }
+            }
+        }
+
+    }
+    return *(this->polygonsPoints);
 }
 
 int Context::getSelectedPolygon() {

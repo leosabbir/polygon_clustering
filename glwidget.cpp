@@ -79,6 +79,22 @@ void GLWidget::paintGL() {
     }
     /*******/
 
+    /*******/
+    //if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
+        glColor3f(1, 1, 1);
+        glEnable(GL_POINT_SMOOTH);
+        glPointSize(3.0);
+        glBegin(GL_POINTS);
+
+        QList<CustomPoint> polygonsPoints = Context::getInstance()->computePointsForClustering();
+        QList<CustomPoint>::iterator pointsIterator;
+        for ( pointsIterator = polygonsPoints.begin(); pointsIterator != polygonsPoints.end(); pointsIterator++) {
+            glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
+        }
+        glEnd();
+    //}
+    /*******/
+
     /***Draw Connecting Lines***/
     if (Context::getInstance()->isDrawConnectingLines()) {
         std::vector<std::vector<PointForConvexHull> > results;
