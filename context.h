@@ -37,7 +37,6 @@ private:
     Context();
     static Context *context;
     QList<CustomeLine> *connectingLines;
-    QList<CustomPoint> *polygonsPoints;
     PolygonsReadWriteUtil *fileReader;
     PolygonComputationUtil *polygonComputationUtil;
     PolygonsIntersectionFinder *cgalUtility;
