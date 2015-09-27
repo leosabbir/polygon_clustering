@@ -13,6 +13,7 @@ public:
 
     static const int DELTA = 5;
     static const int DELTA_FOR_POINTS_CLUSTERING = 10;
+    static const int DELTA_FOR_POINTS_CLUSTERING_BOUNDARY = 5;
 
     static const int NORMAL_MODE = 0;
     static const int EDIT_MODE = 1;
