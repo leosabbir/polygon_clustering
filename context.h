@@ -31,6 +31,10 @@ public:
     double getCurrentY();
     void setCurrentX(double x);
     void setCurrentY(double y);
+    bool isBorderEnabled();
+    bool isVerticesEnabled();
+    void setBorderEnabled(bool borderEnabled);
+    void setVerticesEnabled(bool verticesEnabled);
 
 
 private:
@@ -48,6 +52,8 @@ private:
     bool drawConnectingLines;
     double currentX;
     double currentY;
+    bool borderEnabled;
+    bool verticesEnabled;
 
 };
 

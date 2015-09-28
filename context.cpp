@@ -19,6 +19,8 @@ Context::Context()
     this->threshold = Constants::INITIAL_THRESHOLD;
     this->editMode = Constants::DELETE_VERTEX_MODE;
     this->drawConnectingLines = false;
+    this->borderEnabled = true;
+    this->verticesEnabled = false;
 }
 
 void Context::reset() {
@@ -112,4 +114,20 @@ void Context::setCurrentX(double x) {
 
 void Context::setCurrentY(double y) {
     this->currentY = y;
+}
+
+bool Context::isBorderEnabled() {
+    return this->borderEnabled;
+}
+
+bool Context::isVerticesEnabled() {
+    return this->verticesEnabled;
+}
+
+void Context::setBorderEnabled(bool borderEnabled) {
+    this->borderEnabled = borderEnabled;
+}
+
+void Context::setVerticesEnabled(bool verticesEnabled) {
+    this->verticesEnabled = verticesEnabled;
 }

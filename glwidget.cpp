@@ -35,33 +35,35 @@ void GLWidget::paintGL() {
     glColor3f(1, 0, 0);
 
     /****/
-    int i = 0;
-    QList<CustomPolygon>::iterator polygonIterator;
-    QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
-    for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
-        glLineWidth(2);
-        glBegin(GL_LINE_LOOP);
-        bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
-        if (isSelectedPolygon) {
-            glColor3f(0, 0, 1);
-        } else {
-            glColor3f(1, 0, 0);
-        }
+    if (Context::getInstance()->isBorderEnabled()) {
+        int i = 0;
+        QList<CustomPolygon>::iterator polygonIterator;
+        QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
+        for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
+            glLineWidth(2);
+            glBegin(GL_LINE_LOOP);
+            bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
+            if (isSelectedPolygon) {
+                glColor3f(0, 0, 1);
+            } else {
+                glColor3f(1, 0, 0);
+            }
 
-        for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
-        }
-        glEnd();
-        if (isSelectedPolygon) {
-            glColor3f(1, 1, 1);
-            glEnable(GL_POINT_SMOOTH);
-            glPointSize(3.0);
-            glBegin(GL_POINTS);
-            for (Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-                //QPoint vertex = *vertexIterator;
+            for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
                 glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
             }
             glEnd();
+            if (isSelectedPolygon) {
+                glColor3f(1, 1, 1);
+                glEnable(GL_POINT_SMOOTH);
+                glPointSize(3.0);
+                glBegin(GL_POINTS);
+                for (Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
+                    //QPoint vertex = *vertexIterator;
+                    glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+                }
+                glEnd();
+            }
         }
     }
     /****/
@@ -79,8 +81,8 @@ void GLWidget::paintGL() {
     }
     /*******/
 
-    /*******/
-    //if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
+    /***Draw Polygon Inner Vertices****/
+    if (Context::getInstance()->isVerticesEnabled()) {
         glColor3f(1, 1, 1);
         glEnable(GL_POINT_SMOOTH);
         glPointSize(3.0);
@@ -92,7 +94,7 @@ void GLWidget::paintGL() {
             glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
         }
         glEnd();
-    //}
+    }
     /*******/
 
     /***Draw Connecting Lines***/

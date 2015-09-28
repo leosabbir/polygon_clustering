@@ -109,3 +109,15 @@ void MainWindow::on_clearBtn_released() {
     this->ui->maincontainer->paintGL();
     this->ui->maincontainer->update();
 }
+
+void MainWindow::on_borderChkBox_released() {
+    Context::getInstance()->setBorderEnabled(this->ui->borderChkBox->checkState() == Qt::Checked);
+    this->ui->maincontainer->paintGL();
+    this->ui->maincontainer->update();
+}
+
+void MainWindow::on_verticesChkBox_released() {
+    Context::getInstance()->setVerticesEnabled(this->ui->verticesChkBox->checkState() == Qt::Checked);
+    this->ui->maincontainer->paintGL();
+    this->ui->maincontainer->update();
+}

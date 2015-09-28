@@ -44,6 +44,10 @@ private slots:
 
     void on_clearBtn_released();
 
+    void on_borderChkBox_released();
+
+    void on_verticesChkBox_released();
+
 private:
     Ui::MainWindow *ui;
 };
