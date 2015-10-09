@@ -21,6 +21,7 @@ Context::Context()
     this->drawConnectingLines = false;
     this->borderEnabled = true;
     this->verticesEnabled = false;
+    this->polygonVertexOnly = true;
 }
 
 void Context::reset() {
@@ -53,7 +54,7 @@ void Context::reComputeConnectingLines(int threshold) {
 }
 
 QList<CustomPoint> Context::computePointsForClustering() {
-    return this->polygonComputationUtil->computePointsForClustering();
+    return this->polygonComputationUtil->computePointsForClustering(this->polygonVertexOnly);
 }
 
 int Context::getSelectedPolygon() {
