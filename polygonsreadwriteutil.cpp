@@ -1,7 +1,8 @@
 #include "polygonsreadwriteutil.h"
 #include <istream>
 
-const QString PolygonsReadWriteUtil::INPUTFILEPATH = "/home/sabbir/Documents/sources/cluster_polygon/resources/input.txt";//":/resources/input.txt";
+//"/home/sabbir/Documents/sources/cluster_polygon/resources/input.txt";
+const QString PolygonsReadWriteUtil::INPUTFILEPATH = ":/resources/input.txt";
 
 PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
     this->polygonsFromFile = NULL;

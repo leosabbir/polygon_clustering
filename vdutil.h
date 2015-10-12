@@ -9,11 +9,11 @@
 #include <iterator>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K2;
-typedef K2::Point_2 Point_2;
+typedef K2::Point_2 Point_2_Voronoi;
 typedef K2::Iso_rectangle_2 Iso_rectangle_2;
 typedef K2::Segment_2 Segment_2;
 typedef K2::Ray_2 Ray_2;
-typedef K2::Line_2 Line_2;
+typedef K2::Line_2 Line_2_Voronoi;
 typedef CGAL::Delaunay_triangulation_2<K2>  Delaunay_triangulation_2;
 class VDUtil
 {

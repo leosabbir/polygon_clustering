@@ -16,7 +16,7 @@ public:
     //CustomeLine computeDistance(CustomPolygon p1, CustomPolygon p2);
     //bool doIntersect(CustomPolygon polygon, CustomPolygon line);
     QList<CustomeLine>* computeAllOptimumDistances(QList<CustomPolygon> polygons, double threshold);
-    QList<CustomPoint> computePointsForClustering(bool polygonVertexOnly);
+    QList<CustomPoint>* computePointsForClustering(bool polygonVertexOnly);
 
 private:
     QList<CustomPoint> *polygonsPoints;

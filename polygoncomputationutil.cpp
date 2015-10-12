@@ -38,7 +38,7 @@ QList<CustomeLine>* PolygonComputationUtil::computeAllOptimumDistances(QList<Cus
     return connectingLines;
 }
 
-QList<CustomPoint> PolygonComputationUtil::computePointsForClustering(bool polygonVertexOnly) {
+QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool polygonVertexOnly) {
     if (this->polygonsPoints == NULL) {
         this->polygonsPoints = new QList<CustomPoint>();
     } else {
@@ -127,5 +127,5 @@ QList<CustomPoint> PolygonComputationUtil::computePointsForClustering(bool polyg
         //END ADD VERTICES on the Boundary
 
     }
-    return *(this->polygonsPoints);
+    return (this->polygonsPoints);
 }

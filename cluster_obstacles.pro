@@ -19,6 +19,8 @@ SOURCES += main.cpp\
     polytopedistance.cpp \
     custompoint.cpp \
     customeline.cpp \
+    polygonsreadwriteutil.cpp \
+    polygoninnervertices.cpp \
     custompolygon.cpp \
     polygoncomputationutil.cpp \
     context.cpp \
@@ -27,8 +29,7 @@ SOURCES += main.cpp\
     utils.cpp \
     weightedquickunionuf.cpp \
     convexhullcomputationutil.cpp \
-    polygonsreadwriteutil.cpp \
-    polygoninnervertices.cpp
+    vdutil.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     weightedquickunionuf.h \
     convexhullcomputationutil.h \
     polygonsreadwriteutil.h \
-    polygoninnervertices.h
+    polygoninnervertices.h \
+    vdutil.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/

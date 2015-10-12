@@ -22,6 +22,7 @@ Context::Context()
     this->borderEnabled = true;
     this->verticesEnabled = false;
     this->polygonVertexOnly = true;
+    this->drawVoronoi = true;
 }
 
 void Context::reset() {
@@ -53,7 +54,7 @@ void Context::reComputeConnectingLines(int threshold) {
     this->connectingLines = this->polygonComputationUtil->computeAllOptimumDistances(this->fileReader->constructPolygons(), threshold);
 }
 
-QList<CustomPoint> Context::computePointsForClustering() {
+QList<CustomPoint>* Context::computePointsForClustering() {
     return this->polygonComputationUtil->computePointsForClustering(this->polygonVertexOnly);
 }
 
@@ -131,4 +132,12 @@ void Context::setBorderEnabled(bool borderEnabled) {
 
 void Context::setVerticesEnabled(bool verticesEnabled) {
     this->verticesEnabled = verticesEnabled;
+}
+
+void Context::setDrawVoronoi(bool drawVoronoi) {
+    this->drawVoronoi = drawVoronoi;
+}
+
+bool Context::isDrawVoronoi() {
+    return this->drawVoronoi;
 }

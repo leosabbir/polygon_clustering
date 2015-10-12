@@ -1,6 +1,7 @@
 #include "vdutil.h"
 
 #include <iostream>
+#include <QDebug>
 
 
 //A class to recover Voronoi diagram from stream.
@@ -20,7 +21,7 @@ struct Cropped_voronoi_from_delaunay{
   }
 
   void operator<<(const Ray_2& ray)    { crop_and_extract_segment(ray); }
-  void operator<<(const Line_2& line)  { crop_and_extract_segment(line); }
+  void operator<<(const Line_2_Voronoi& line)  { crop_and_extract_segment(line); }
   void operator<<(const Segment_2& seg){ crop_and_extract_segment(seg); }
 };
 
@@ -76,10 +77,11 @@ void VDUtil::construct2(QList<CustomPoint> vertices) {
     }
 
     Delaunay_triangulation_2 dt2;
-    std::vector<Point_2> points;
+    std::vector<Point_2_Voronoi> points;
 
     for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
-        points.push_back(Point_2(CGAL::to_double((*vertexIterator).x()), CGAL::to_double((*vertexIterator).y())));
+        qDebug() << CGAL::to_double((*vertexIterator).x()) <<  " : " << CGAL::to_double((*vertexIterator).y());
+        points.push_back(Point_2_Voronoi(CGAL::to_double((*vertexIterator).x()), CGAL::to_double((*vertexIterator).y())));
     }
 
     dt2.insert(points.begin(), points.end());
@@ -94,7 +96,9 @@ void VDUtil::construct2(QList<CustomPoint> vertices) {
       std::list<Segment_2>::const_iterator iterator;
       //std::cout << vor.m_cropped_vd.size() << std::endl;
       for (iterator = vor.m_cropped_vd.begin(); iterator != vor.m_cropped_vd.end(); ++iterator) {
+          qDebug() << (*iterator).source().x() << " : " << (*iterator).source().y();
           this->voronoiLineSegments->append(*(new CustomPoint((*iterator).source().x(), (*iterator).source().y())));
+          qDebug() << (*iterator).target().x() << " : " << (*iterator).target().y();
           this->voronoiLineSegments->append(*(new CustomPoint((*iterator).target().x(), (*iterator).target().y())));
       }
 }

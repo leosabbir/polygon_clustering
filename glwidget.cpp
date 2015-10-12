@@ -7,6 +7,7 @@
 #include "polygonsreadwriteutil.h"
 #include "context.h"
 #include "customeline.h"
+#include "vdutil.h"
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent) {
     Constants::WIDTH = this->size().width();
@@ -81,6 +82,7 @@ void GLWidget::paintGL() {
     }
     /*******/
 
+    QList<CustomPoint>* polygonsPoints = Context::getInstance()->computePointsForClustering();
     /***Draw Polygon Inner Vertices****/
     if (Context::getInstance()->isVerticesEnabled()) {
         glColor3f(1, 1, 1);
@@ -88,14 +90,34 @@ void GLWidget::paintGL() {
         glPointSize(3.0);
         glBegin(GL_POINTS);
 
-        QList<CustomPoint> polygonsPoints = Context::getInstance()->computePointsForClustering();
+
         QList<CustomPoint>::iterator pointsIterator;
-        for ( pointsIterator = polygonsPoints.begin(); pointsIterator != polygonsPoints.end(); pointsIterator++) {
+        for ( pointsIterator = polygonsPoints->begin(); pointsIterator != polygonsPoints->end(); pointsIterator++) {
             glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
         }
         glEnd();
     }
     /*******/
+
+    /***Draw Voronoi Diagram*****/
+    if (Context::getInstance()->isVerticesEnabled() && Context::getInstance()->isDrawVoronoi()) {
+        VDUtil vdUtil;
+        vdUtil.construct2(*polygonsPoints);
+        QList<CustomPoint> voronoiLineSegments = vdUtil.getVoronoiLineSegments();
+
+        glLineWidth(1.0);
+        glBegin(GL_LINES);
+        glColor3f(1, 1, 0);
+        for ( QList<CustomPoint>::iterator vertexIterator = voronoiLineSegments.begin(); vertexIterator != voronoiLineSegments.end(); vertexIterator++) {
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+            //qDebug() << "Source: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
+            vertexIterator++;
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+            //qDebug() << "Target: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
+        }
+        glEnd();
+    }
+    /***End Draw Voronoi Diagram*****/
 
     /***Draw Connecting Lines***/
     if (Context::getInstance()->isDrawConnectingLines()) {

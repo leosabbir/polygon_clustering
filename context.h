@@ -15,7 +15,7 @@ public:
     PolygonsReadWriteUtil getFileReader();
     QList<CustomeLine> getConnectingLines();
     void reComputeConnectingLines(int threshold);
-    QList<CustomPoint> computePointsForClustering();
+    QList<CustomPoint>* computePointsForClustering();
     PolygonsIntersectionFinder getCgalUtility();
     int getSelectedPolygon();
     void setSelectedPolygon(int selectedPolygonIndex);
@@ -35,6 +35,8 @@ public:
     bool isVerticesEnabled();
     void setBorderEnabled(bool borderEnabled);
     void setVerticesEnabled(bool verticesEnabled);
+    void setDrawVoronoi(bool drawVoronoi);
+    bool isDrawVoronoi();
 
 
 private:
@@ -55,6 +57,7 @@ private:
     bool borderEnabled;
     bool verticesEnabled;
     bool polygonVertexOnly;
+    bool drawVoronoi;
 
 };
 
