@@ -118,6 +118,19 @@ void MainWindow::on_borderChkBox_released() {
 
 void MainWindow::on_verticesChkBox_released() {
     Context::getInstance()->setVerticesEnabled(this->ui->verticesChkBox->checkState() == Qt::Checked);
+    if (!Context::getInstance()->isVerticesEnabled()) {
+        this->ui->showAllEdgesChkBox->setEnabled(false);
+    } else {
+        this->ui->showAllEdgesChkBox->setEnabled(true);
+    }
     this->ui->maincontainer->paintGL();
     this->ui->maincontainer->update();
+}
+
+void MainWindow::on_showAllEdgesChkBox_released() {
+    if (Context::getInstance()->isVerticesEnabled()) {
+        Context::getInstance()->setDrawOnlyNonIntersectingVoronoiEdges(this->ui->showAllEdgesChkBox->checkState() == Qt::Checked);
+        this->ui->maincontainer->paintGL();
+        this->ui->maincontainer->update();
+    }
 }

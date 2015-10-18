@@ -37,6 +37,8 @@ public:
     void setVerticesEnabled(bool verticesEnabled);
     void setDrawVoronoi(bool drawVoronoi);
     bool isDrawVoronoi();
+    void setDrawOnlyNonIntersectingVoronoiEdges(bool drawVoronoi);
+    bool isDrawOnlyNonIntersectingVoronoiEdges();
 
 
 private:
@@ -58,6 +60,7 @@ private:
     bool verticesEnabled;
     bool polygonVertexOnly;
     bool drawVoronoi;
+    bool drawOnlyNonIntersectingVoronoiEdges;
 
 };
 

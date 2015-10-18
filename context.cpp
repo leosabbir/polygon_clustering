@@ -23,6 +23,7 @@ Context::Context()
     this->verticesEnabled = false;
     this->polygonVertexOnly = true;
     this->drawVoronoi = true;
+    this->drawOnlyNonIntersectingVoronoiEdges = false;
 }
 
 void Context::reset() {
@@ -140,4 +141,12 @@ void Context::setDrawVoronoi(bool drawVoronoi) {
 
 bool Context::isDrawVoronoi() {
     return this->drawVoronoi;
+}
+
+void Context::setDrawOnlyNonIntersectingVoronoiEdges(bool drawOnlyNonIntersectingVoronoiEdges) {
+    this->drawOnlyNonIntersectingVoronoiEdges = drawOnlyNonIntersectingVoronoiEdges;
+}
+
+bool Context::isDrawOnlyNonIntersectingVoronoiEdges() {
+    return this->drawOnlyNonIntersectingVoronoiEdges;
 }

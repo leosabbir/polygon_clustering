@@ -48,6 +48,8 @@ private slots:
 
     void on_verticesChkBox_released();
 
+    void on_showAllEdgesChkBox_released();
+
 private:
     Ui::MainWindow *ui;
 };
