@@ -3,6 +3,7 @@
 
 #include <QList>
 #include "custompoint.h"
+#include "custompolygon.h"
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Delaunay_triangulation_2.h>
@@ -22,11 +23,12 @@ public:
 
     //void printEndPoint(Halfedge_handle e, bool isSrc);
     void construct(QList<CustomPoint> vertices);
-    void construct2(QList<CustomPoint> vertices);
+    void construct2(QList<CustomPoint> vertices, bool constructWithoutIntersectingEdges);
     QList<CustomPoint> getVoronoiLineSegments();
 
 private:
     QList<CustomPoint>* voronoiLineSegments;
+    bool doesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4);
 };
 
 #endif // VDUTIL_H
