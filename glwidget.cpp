@@ -102,7 +102,7 @@ void GLWidget::paintGL() {
     /***Draw Voronoi Diagram*****/
     if (Context::getInstance()->isVerticesEnabled() && Context::getInstance()->isDrawVoronoi()) {
         VDUtil vdUtil;
-        vdUtil.construct2(*polygonsPoints, true);
+        vdUtil.construct(*polygonsPoints, true);
         QList<CustomPoint> voronoiLineSegments = vdUtil.getVoronoiLineSegments();
 
         glLineWidth(1.0);

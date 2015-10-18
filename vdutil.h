@@ -22,8 +22,7 @@ public:
     VDUtil();
 
     //void printEndPoint(Halfedge_handle e, bool isSrc);
-    void construct(QList<CustomPoint> vertices);
-    void construct2(QList<CustomPoint> vertices, bool constructWithoutIntersectingEdges);
+    void construct(QList<CustomPoint> vertices, bool constructWithoutIntersectingEdges);
     QList<CustomPoint> getVoronoiLineSegments();
 
 private:
