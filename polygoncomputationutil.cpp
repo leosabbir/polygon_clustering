@@ -127,9 +127,20 @@ QList<PointToCluster>* PolygonComputationUtil::computePointsForClustering(bool p
         //END ADD VERTICES on the Boundary
 
     }
+    this->clusterVertices(4);
     return (this->polygonsPoints);
 }
 
-void PolygonComputationUtil::clusterVertices() {
+void PolygonComputationUtil::clusterVertices(int numberOfClusters) {
+    if(this->polygonsPoints->size() < numberOfClusters) {
+        return;
+    }
+    double medians[numberOfClusters][2];
 
+    for(int i = 0; i < numberOfClusters; i++) {
+        medians[i][0] = CGAL::to_double(this->polygonsPoints->at(i).x());
+        medians[i][1] = CGAL::to_double(this->polygonsPoints->at(i).y());
+
+        i++;
+    }
 }

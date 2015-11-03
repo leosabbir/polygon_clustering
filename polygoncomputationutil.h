@@ -17,7 +17,7 @@ public:
     //bool doIntersect(CustomPolygon polygon, CustomPolygon line);
     QList<CustomeLine>* computeAllOptimumDistances(QList<CustomPolygon> polygons, double threshold);
     QList<PointToCluster>* computePointsForClustering(bool polygonVertexOnly);
-    void clusterVertices();
+    void clusterVertices(int numberOfClusters);
 
 private:
     QList<PointToCluster> *polygonsPoints;
