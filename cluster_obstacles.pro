@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     utils.cpp \
     weightedquickunionuf.cpp \
     convexhullcomputationutil.cpp \
-    vdutil.cpp
+    vdutil.cpp \
+    xfigfilegenerator.cpp \
+    pointtocluster.cpp
 
 HEADERS  += mainwindow.h \
             glwidget.h \
@@ -47,7 +49,9 @@ HEADERS  += mainwindow.h \
     convexhullcomputationutil.h \
     polygonsreadwriteutil.h \
     polygoninnervertices.h \
-    vdutil.h
+    vdutil.h \
+    xfigfilegenerator.h \
+    pointtocluster.h
 
 INCLUDEPATH +=   /usr/local/include/
 LIBS        += -L/usr/local/include/

@@ -4,7 +4,7 @@
 #include <QList>
 #include <QHash>
 
-#include "custompoint.h"
+#include "pointtocluster.h"
 #include "customeline.h"
 #include "custompolygon.h"
 #include "weightedquickunionuf.h"
@@ -16,10 +16,11 @@ public:
     //CustomeLine computeDistance(CustomPolygon p1, CustomPolygon p2);
     //bool doIntersect(CustomPolygon polygon, CustomPolygon line);
     QList<CustomeLine>* computeAllOptimumDistances(QList<CustomPolygon> polygons, double threshold);
-    QList<CustomPoint>* computePointsForClustering(bool polygonVertexOnly);
+    QList<PointToCluster>* computePointsForClustering(bool polygonVertexOnly);
+    void clusterVertices();
 
 private:
-    QList<CustomPoint> *polygonsPoints;
+    QList<PointToCluster> *polygonsPoints;
 };
 
 #endif // POLYGONCOMPUTATIONUTIL_H

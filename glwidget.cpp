@@ -69,7 +69,7 @@ void GLWidget::paintGL() {
     }
     /****/
 
-    /*******/
+    /*** Draw vertices of new polygon ****/
     if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
         glColor3f(1, 1, 1);
         glEnable(GL_POINT_SMOOTH);
@@ -82,7 +82,7 @@ void GLWidget::paintGL() {
     }
     /*******/
 
-    QList<CustomPoint>* polygonsPoints = Context::getInstance()->computePointsForClustering();
+    QList<PointToCluster>* polygonsPoints = Context::getInstance()->computePointsForClustering();
     /***Draw Polygon Inner Vertices****/
     if (Context::getInstance()->isVerticesEnabled()) {
         glColor3f(1, 1, 1);
@@ -91,7 +91,7 @@ void GLWidget::paintGL() {
         glBegin(GL_POINTS);
 
 
-        QList<CustomPoint>::iterator pointsIterator;
+        QList<PointToCluster>::iterator pointsIterator;
         for ( pointsIterator = polygonsPoints->begin(); pointsIterator != polygonsPoints->end(); pointsIterator++) {
             glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
         }
@@ -160,6 +160,32 @@ void GLWidget::paintGL() {
 
 void GLWidget::update() {
     QWidget::update();
+}
+
+void GLWidget::generateXfigFile(QString filepath) {
+    XfigFileGenerator fileGenerator(filepath);
+
+    QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
+    fileGenerator.drawPolygons(polygons);
+
+    QList<PointToCluster>* polygonsPoints = Context::getInstance()->computePointsForClustering();
+//    if (Context::getInstance()->isVerticesEnabled()) {
+//        QList<CustomPoint>::iterator pointsIterator;
+//        for ( pointsIterator = polygonsPoints->begin(); pointsIterator != polygonsPoints->end(); pointsIterator++) {
+//            glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
+//        }
+//    }
+
+    /***Draw Voronoi Diagram*****/
+    if (Context::getInstance()->isVerticesEnabled() && Context::getInstance()->isDrawVoronoi()) {
+        VDUtil vdUtil;
+        vdUtil.construct(*polygonsPoints, !Context::getInstance()->isDrawOnlyNonIntersectingVoronoiEdges());
+        QList<CustomPoint> voronoiLineSegments = vdUtil.getVoronoiLineSegments();
+
+        fileGenerator.drawLines(voronoiLineSegments);
+    }
+    /***End Draw Voronoi Diagram*****/
+
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event){

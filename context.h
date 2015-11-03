@@ -15,7 +15,7 @@ public:
     PolygonsReadWriteUtil getFileReader();
     QList<CustomeLine> getConnectingLines();
     void reComputeConnectingLines(int threshold);
-    QList<CustomPoint>* computePointsForClustering();
+    QList<PointToCluster>* computePointsForClustering();
     PolygonsIntersectionFinder getCgalUtility();
     int getSelectedPolygon();
     void setSelectedPolygon(int selectedPolygonIndex);

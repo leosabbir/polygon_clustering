@@ -2,14 +2,17 @@
 #define XFIGFILEGENERATOR_H
 
 #include "custompolygon.h"
+#include <QList>
+#include <QFile>
 
 class XfigFileGenerator
 {
 public:
-    XfigFileGenerator();
+    XfigFileGenerator(QString filePath);
     void initialize(QString filePath);
     void drawPolygons(QList<CustomPolygon> polygons);
-    void drawLine(double x1, double y1, double x2, double y2);
+    void drawPolygon(CustomPolygon polygon);
+    void drawLines(QList<CustomPoint> vertices);
 
 private:
     QString *currentFile;

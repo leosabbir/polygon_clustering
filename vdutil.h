@@ -2,7 +2,7 @@
 #define VDUTIL_H
 
 #include <QList>
-#include "custompoint.h"
+#include "pointtocluster.h"
 #include "custompolygon.h"
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
@@ -22,7 +22,7 @@ public:
     VDUtil();
 
     //void printEndPoint(Halfedge_handle e, bool isSrc);
-    void construct(QList<CustomPoint> vertices, bool constructWithoutIntersectingEdges);
+    void construct(QList<PointToCluster> vertices, bool constructWithoutIntersectingEdges);
     QList<CustomPoint> getVoronoiLineSegments();
 
 private:

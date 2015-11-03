@@ -134,3 +134,11 @@ void MainWindow::on_showAllEdgesChkBox_released() {
         this->ui->maincontainer->update();
     }
 }
+
+void MainWindow::on_xfigFileBtn_released() {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), ":/resources/", "All files (*.*);;Text File(*.txt)");
+    if(fileName.isEmpty()) {
+        return;
+    }
+    this->ui->maincontainer->generateXfigFile(fileName);
+}

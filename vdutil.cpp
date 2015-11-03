@@ -30,7 +30,7 @@ VDUtil::VDUtil() {
     voronoiLineSegments = NULL;
 }
 
-void VDUtil::construct(QList<CustomPoint> vertices, bool constructWithoutIntersectingEdges) {
+void VDUtil::construct(QList<PointToCluster> vertices, bool constructWithoutIntersectingEdges) {
     if (voronoiLineSegments == NULL) {
         this->voronoiLineSegments = new QList<CustomPoint>();
     } else {
@@ -40,7 +40,7 @@ void VDUtil::construct(QList<CustomPoint> vertices, bool constructWithoutInterse
     Delaunay_triangulation_2 dt2;
     std::vector<Point_2_Voronoi> points;
 
-    for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
+    for ( QList<PointToCluster>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
         //qDebug() << CGAL::to_double((*vertexIterator).x()) <<  " : " << CGAL::to_double((*vertexIterator).y());
         points.push_back(Point_2_Voronoi(CGAL::to_double((*vertexIterator).x()), CGAL::to_double((*vertexIterator).y())));
     }

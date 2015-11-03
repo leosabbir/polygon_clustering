@@ -38,9 +38,9 @@ QList<CustomeLine>* PolygonComputationUtil::computeAllOptimumDistances(QList<Cus
     return connectingLines;
 }
 
-QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool polygonVertexOnly) {
+QList<PointToCluster>* PolygonComputationUtil::computePointsForClustering(bool polygonVertexOnly) {
     if (this->polygonsPoints == NULL) {
-        this->polygonsPoints = new QList<CustomPoint>();
+        this->polygonsPoints = new QList<PointToCluster>();
     } else {
         this->polygonsPoints->clear();
     }
@@ -57,7 +57,7 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
                 for(double y = ymin; y <= ymax; y += Constants::DELTA_FOR_POINTS_CLUSTERING) {
                     CGAL::Bounded_side positionOfPointInPolygon = Context::getInstance()->getCgalUtility().getPointLocationOnPolygon(*polygonIterator, x, y);
                     if(positionOfPointInPolygon == CGAL::ON_BOUNDED_SIDE) {
-                        this->polygonsPoints->append(*(new CustomPoint(x, y)));
+                        this->polygonsPoints->append(*(new PointToCluster(x, y, 0, i)));
                     }
                 }
             }
@@ -75,7 +75,7 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
             double x2 = CGAL::to_double((*next).x());
             double y2 = CGAL::to_double((*next).y());
 
-            this->polygonsPoints->append(*(new CustomPoint(x1, y1)));
+            this->polygonsPoints->append(*(new PointToCluster(x1, y1, 0, i)));
             if (!polygonVertexOnly) {
                 int dx = 1;
                 int dy = 1;
@@ -89,13 +89,13 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
                 if (y1 == y2) {
                     double x = x1 + Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dx;
                     while ((dx == 1 && x < x2) || (dx == -1 && x > x2)) {
-                        this->polygonsPoints->append(*(new CustomPoint(x, y1)));
+                        this->polygonsPoints->append(*(new PointToCluster(x, y1, 0, i)));
                         x += Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dx;
                     }
                 } else if ( x1 == x2) {
                     double y = y1 + Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dy;
                     while ((dy == 1 && y < y2) || (dy == -1 && y > y2)) {
-                        this->polygonsPoints->append(*(new CustomPoint(x1, y)));
+                        this->polygonsPoints->append(*(new PointToCluster(x1, y, 0, i)));
                         y += Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dy;
                     }
                 } else {
@@ -106,7 +106,7 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
                         double x = x1 + Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dx;
                         double y = m * x + c;
                         while((dy == 1 && y < y2) || (dy == -1 && y > y2)) {
-                            this->polygonsPoints->append(*(new CustomPoint(x, y)));
+                            this->polygonsPoints->append(*(new PointToCluster(x, y, 0, i)));
                             x += Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dx;
                             y = m * x + c;
                         }
@@ -114,7 +114,7 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
                         double y = y1 + Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY *dy;
                         double x = (y - c) / m;
                         while ((dx == 1 && x < x2) || (dx == -1 && x > x2)) {
-                            this->polygonsPoints->append(*(new CustomPoint(x, y)));
+                            this->polygonsPoints->append(*(new PointToCluster(x, y, 0, i)));
                             y += Constants::DELTA_FOR_POINTS_CLUSTERING_BOUNDARY * dy;
                             x = (y - c) / m;
                         }
@@ -122,10 +122,14 @@ QList<CustomPoint>* PolygonComputationUtil::computePointsForClustering(bool poly
 
                 }
             }
-            this->polygonsPoints->append(*(new CustomPoint(x2, y2)));
+            this->polygonsPoints->append(*(new PointToCluster(x2, y2, 0, i)));
         }
         //END ADD VERTICES on the Boundary
 
     }
     return (this->polygonsPoints);
+}
+
+void PolygonComputationUtil::clusterVertices() {
+
 }

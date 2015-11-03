@@ -50,6 +50,8 @@ private slots:
 
     void on_showAllEdgesChkBox_released();
 
+    void on_xfigFileBtn_released();
+
 private:
     Ui::MainWindow *ui;
 };

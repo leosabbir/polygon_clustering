@@ -2,7 +2,7 @@
 #include <istream>
 
 //"/home/sabbir/Documents/sources/cluster_polygon/resources/input.txt";
-const QString PolygonsReadWriteUtil::INPUTFILEPATH = ":/resources/input.txt";
+const QString PolygonsReadWriteUtil::INPUTFILEPATH = "/home/sabbir/Documents/sources/cluster_polygon/resources/test2.txt";//":/resources/test2.txt";
 
 PolygonsReadWriteUtil::PolygonsReadWriteUtil() {
     this->polygonsFromFile = NULL;

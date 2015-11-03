@@ -5,6 +5,7 @@
 #include "custompolygon.h"
 #include "constants.h"
 #include "utils.h"
+#include "xfigfilegenerator.h"
 
 class GLWidget : public QGLWidget {
 
@@ -18,6 +19,8 @@ public:
     void paintGL();
     void resizeGL(int w, int h);
     void update();
+
+    void generateXfigFile(QString filepath);
 
     double transformX(double x, double width);
     double transformY(double y, double height);
