@@ -4,3 +4,15 @@ PointToCluster::PointToCluster(double x, double y, int clusterIndex, int parentP
     this->clusterIndex = clusterIndex;
     this->parentPolygonIndex = parentPolygonIndex;
 }
+
+void PointToCluster::setClusterIndex(int clusterIndex) {
+    this->clusterIndex = clusterIndex;
+}
+
+int PointToCluster::getClusterIndex() {
+    return this->clusterIndex;
+}
+
+int PointToCluster::getParentPolygonIndex() {
+    return this->clusterIndex;
+}

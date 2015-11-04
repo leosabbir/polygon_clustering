@@ -85,7 +85,7 @@ void GLWidget::paintGL() {
     QList<PointToCluster>* polygonsPoints = Context::getInstance()->computePointsForClustering();
     /***Draw Polygon Inner Vertices****/
     if (Context::getInstance()->isVerticesEnabled()) {
-        glColor3f(1, 1, 1);
+
         glEnable(GL_POINT_SMOOTH);
         glPointSize(3.0);
         glBegin(GL_POINTS);
@@ -93,7 +93,24 @@ void GLWidget::paintGL() {
 
         QList<PointToCluster>::iterator pointsIterator;
         for ( pointsIterator = polygonsPoints->begin(); pointsIterator != polygonsPoints->end(); pointsIterator++) {
+            int index = (*pointsIterator).getClusterIndex();
+            switch (index) {
+            case 0:
+                glColor3f(1, 1, 1);
+                break;
+            case 1:
+                glColor3f(0, 1, 0);
+                break;
+            case 2:
+                glColor3f(0, 0, 1);
+                break;
+            default:
+                glColor3f(1, 0, 0);
+                break;
+            }
+
             glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
+            qDebug() << (*pointsIterator).getClusterIndex();
         }
         glEnd();
     }
@@ -148,7 +165,7 @@ void GLWidget::paintGL() {
             for (std::vector<PointForConvexHull>::iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2) {
                 double x = (*it2).x();
                 double y = (*it2).y();
-                qDebug() << x << " " << y;//(*it).size();
+                //qDebug() << x << " " << y;//(*it).size();
                 //glVertex2d(transformX(x, width), transformY(y, height));
                 glVertex2d(x, y);
             }

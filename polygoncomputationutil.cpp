@@ -140,7 +140,43 @@ void PolygonComputationUtil::clusterVertices(int numberOfClusters) {
     for(int i = 0; i < numberOfClusters; i++) {
         medians[i][0] = CGAL::to_double(this->polygonsPoints->at(i).x());
         medians[i][1] = CGAL::to_double(this->polygonsPoints->at(i).y());
-
-        i++;
     }
+
+
+
+    int iteration = 0;
+    while (iteration < 10) {
+        int counts[numberOfClusters];
+        double coordinateSums[numberOfClusters][2];
+
+        for (QList<PointToCluster>::iterator vertexIterator = this->polygonsPoints->begin(); vertexIterator != this->polygonsPoints->end(); vertexIterator++) {
+            double x1 = CGAL::to_double((*vertexIterator).x());
+            double y1 = CGAL::to_double((*vertexIterator).y());
+
+            double shortestDist = -1;
+            for (int i = 0; i < numberOfClusters; i++) {
+                double distance = 0;
+                distance = (x1 - medians[i][0])*(x1 - medians[i][0]) + (y1 - medians[i][1])*(y1 - medians[i][1]);
+                if (shortestDist == -1 || shortestDist > distance) {
+                    shortestDist = distance;
+                    (*vertexIterator).setClusterIndex(i);
+                }
+            }
+            int clusterIndex = (*vertexIterator).getClusterIndex();
+            counts[clusterIndex]++;
+            coordinateSums[clusterIndex][0] += x1;
+            coordinateSums[clusterIndex][1] += y1;
+        }
+
+        for(int i = 0; i < numberOfClusters; i++) {
+            medians[i][0] = coordinateSums[i][0] / counts[i];
+            medians[i][1] = coordinateSums[i][1] / counts[i];
+            i++;
+        }
+
+
+        iteration++;
+    }
+
+
 }
