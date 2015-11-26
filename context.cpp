@@ -21,8 +21,7 @@ Context::Context()
     this->drawConnectingLines = false;
     this->borderEnabled = true;
     this->verticesEnabled = false;
-    this->polygonVertexOnly = false;
-    this->drawVoronoi = false;
+    this->drawVoronoi = false; //set it to FALSE for k-means clustering
     this->drawOnlyNonIntersectingVoronoiEdges = false;
 }
 
@@ -56,7 +55,7 @@ void Context::reComputeConnectingLines(int threshold) {
 }
 
 QList<PointToCluster>* Context::computePointsForClustering() {
-    return this->polygonComputationUtil->computePointsForClustering(this->polygonVertexOnly);
+    return this->polygonComputationUtil->computePointsForClustering(this->drawVoronoi);
 }
 
 int Context::getSelectedPolygon() {

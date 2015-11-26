@@ -58,7 +58,6 @@ private:
     double currentY;
     bool borderEnabled;
     bool verticesEnabled;
-    bool polygonVertexOnly;
     bool drawVoronoi;
     bool drawOnlyNonIntersectingVoronoiEdges;
 

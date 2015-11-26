@@ -127,7 +127,9 @@ QList<PointToCluster>* PolygonComputationUtil::computePointsForClustering(bool p
         //END ADD VERTICES on the Boundary
 
     }
-    this->clusterVertices(4);
+    if (!polygonVertexOnly) {
+        this->clusterVertices(5);
+    }
     return (this->polygonsPoints);
 }
 
@@ -137,17 +139,52 @@ void PolygonComputationUtil::clusterVertices(int numberOfClusters) {
     }
     double medians[numberOfClusters][2];
 
-    for(int i = 0; i < numberOfClusters; i++) {
-        medians[i][0] = CGAL::to_double(this->polygonsPoints->at(i).x());
-        medians[i][1] = CGAL::to_double(this->polygonsPoints->at(i).y());
+    medians[0][0] = 0;
+    medians[0][1] = 0;
+
+    medians[1][0] = 1 * Constants::WIDTH;
+    medians[1][1] = 1 * Constants::HEIGHT;
+
+    if (numberOfClusters > 2) {
+        medians[2][0] = 1 * Constants::WIDTH;
+        medians[2][1] = 0;
     }
+
+    if (numberOfClusters > 3) {
+        medians[3][0] = 0;
+        medians[3][1] = 1 * Constants::HEIGHT;
+    }
+
+    if (numberOfClusters == 5) {
+        qDebug() << numberOfClusters;
+        medians[4][0] = 1.0/2 * Constants::WIDTH;
+        medians[4][1] = 1.0/2 * Constants::HEIGHT;
+    } else if (numberOfClusters == 6) {
+        medians[4][0] = 1.0/3 * Constants::WIDTH;
+        medians[4][1] = 1.0/2 * Constants::HEIGHT;
+
+        medians[5][0] = 2.0/3 * Constants::WIDTH;
+        medians[5][1] = 1.0/2 * Constants::HEIGHT;
+    }
+
+
+//    for(int i = 0; i < numberOfClusters; i++) {
+//        medians[i][0] = CGAL::to_double(this->polygonsPoints->at(i).x());
+//        medians[i][1] = CGAL::to_double(this->polygonsPoints->at(i).y());
+//    }
 
 
 
     int iteration = 0;
-    while (iteration < 10) {
+    while (iteration < 15) {
         int counts[numberOfClusters];
         double coordinateSums[numberOfClusters][2];
+
+        for(int i = 0; i < numberOfClusters; i++) {
+            counts[i] = 0;
+            coordinateSums[i][0] = 0;
+            coordinateSums[i][1] = 0;
+        }
 
         for (QList<PointToCluster>::iterator vertexIterator = this->polygonsPoints->begin(); vertexIterator != this->polygonsPoints->end(); vertexIterator++) {
             double x1 = CGAL::to_double((*vertexIterator).x());
@@ -156,7 +193,7 @@ void PolygonComputationUtil::clusterVertices(int numberOfClusters) {
             double shortestDist = -1;
             for (int i = 0; i < numberOfClusters; i++) {
                 double distance = 0;
-                distance = (x1 - medians[i][0])*(x1 - medians[i][0]) + (y1 - medians[i][1])*(y1 - medians[i][1]);
+                distance = (x1 - medians[i][0]) * (x1 - medians[i][0]) + (y1 - medians[i][1]) * (y1 - medians[i][1]);
                 if (shortestDist == -1 || shortestDist > distance) {
                     shortestDist = distance;
                     (*vertexIterator).setClusterIndex(i);
@@ -171,7 +208,6 @@ void PolygonComputationUtil::clusterVertices(int numberOfClusters) {
         for(int i = 0; i < numberOfClusters; i++) {
             medians[i][0] = coordinateSums[i][0] / counts[i];
             medians[i][1] = coordinateSums[i][1] / counts[i];
-            i++;
         }
 
 

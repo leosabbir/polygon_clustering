@@ -41,7 +41,7 @@ void GLWidget::paintGL() {
         QList<CustomPolygon>::iterator polygonIterator;
         QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
         for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
-            glLineWidth(2);
+            glLineWidth(.5);
             glBegin(GL_LINE_LOOP);
             bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
             if (isSelectedPolygon) {
@@ -73,7 +73,7 @@ void GLWidget::paintGL() {
     if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
         glColor3f(1, 1, 1);
         glEnable(GL_POINT_SMOOTH);
-        glPointSize(3.0);
+        glPointSize(1.0);
         glBegin(GL_POINTS);
         for ( Vertex_iterator vertexIterator = this->newPolygon->vertices_begin(); vertexIterator != this->newPolygon->vertices_end(); vertexIterator++) {
             glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
@@ -95,22 +95,31 @@ void GLWidget::paintGL() {
         for ( pointsIterator = polygonsPoints->begin(); pointsIterator != polygonsPoints->end(); pointsIterator++) {
             int index = (*pointsIterator).getClusterIndex();
             switch (index) {
-            case 0:
-                glColor3f(1, 1, 1);
-                break;
-            case 1:
-                glColor3f(0, 1, 0);
-                break;
-            case 2:
-                glColor3f(0, 0, 1);
-                break;
-            default:
-                glColor3f(1, 0, 0);
-                break;
+                case 0:
+                    glColor3f(1, 1, 1);
+                    break;
+                case 1:
+                    glColor3f(0, 1, 0);
+                    break;
+                case 2:
+                    glColor3f(0, 0, 1);
+                    break;
+                case 3:
+                    glColor3f(1, 0, 0);
+                    break;
+                case 4:
+                    glColor3f(0, 1, 1);
+                    break;
+                case 5:
+                    glColor3f(1, 0, 1);
+                    break;
+                default:
+                    glColor3f(1, 1, 0);
+                    break;
             }
 
             glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
-            qDebug() << (*pointsIterator).getClusterIndex();
+            //qDebug() << (*pointsIterator).getClusterIndex();
         }
         glEnd();
     }
