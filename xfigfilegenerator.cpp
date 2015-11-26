@@ -2,6 +2,7 @@
 
 XfigFileGenerator::XfigFileGenerator(QString filePath){
     this->currentFile = new QString();
+    this->magnification = 10;
     this->initialize(filePath);
 }
 
@@ -11,7 +12,8 @@ void XfigFileGenerator::initialize(QString filePath) {
     this->currentFile->clear();
     this->currentFile->append(filePath);
 
-    if ( outputFile->open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text) ) {
+    if ( outputFile->open(QIODevice::ReadWrite | QIODevice::Text) ) {
+        outputFile->resize(0);
         QTextStream stream( outputFile );
 
         qDebug() << "Saving the XFig file: " << filePath;
@@ -41,14 +43,19 @@ void XfigFileGenerator::drawPolygons(QList<CustomPolygon> polygons) {
         QTextStream stream( outputFile );
 
         for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
-            stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 ";
-            stream << (*polygonIterator).size();
+            stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 " << (*polygonIterator).size() + 1 << endl;
             for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-                double x = CGAL::to_double((*vertexIterator).x());
-                double y = CGAL::to_double((*vertexIterator).y());
+                double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
+                double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
 
                 stream << x << " " << y << " ";
             }
+            //Append initial point to complete cycle
+            Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin();
+            double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
+            double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
+            stream << x << " " << y;
+
             stream << endl;
         }
         //stream << x << " " << y << " ";
@@ -67,14 +74,19 @@ void XfigFileGenerator::drawPolygon(CustomPolygon polygon) {
         QList<CustomPolygon>::iterator polygonIterator;
         QTextStream stream( outputFile );
 
-        stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 ";
-        stream << polygon.size();
+        stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 " << polygon.size() + 1 << endl;
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
-            double x = CGAL::to_double((*vertexIterator).x());
-            double y = CGAL::to_double((*vertexIterator).y());
+            double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
+            double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
 
             stream << x << " " << y << " ";
-         }
+        }
+
+        //Append initial point to complete cycle
+        Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin();
+        double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
+        double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
+        stream << x << " " << y;
 
         stream << endl;
 
@@ -92,10 +104,12 @@ void XfigFileGenerator::drawLines(QList<CustomPoint> vertices) {
         QTextStream stream( outputFile );
 
         for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
-            stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2 ";
-            stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2" << endl;
+            //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            stream << (int) CGAL::to_double((*vertexIterator).x())  * this->magnification << " " << (int) CGAL::to_double((*vertexIterator).y()) * this->magnification << " ";
             vertexIterator++;
-            stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            stream << (int) CGAL::to_double((*vertexIterator).x()) * this->magnification << " " << (int) CGAL::to_double((*vertexIterator).y()) * this->magnification;
             stream << endl;
         }
 

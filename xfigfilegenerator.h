@@ -16,6 +16,7 @@ public:
 
 private:
     QString *currentFile;
+    int magnification;
 };
 
 #endif // XFIGFILEGENERATOR_H
