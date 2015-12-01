@@ -48,13 +48,13 @@ void XfigFileGenerator::drawPolygons(QList<CustomPolygon> polygons) {
                 double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
                 double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
 
-                stream << x << " " << y << " ";
+                stream << x << " " << 6000 - y << " ";
             }
             //Append initial point to complete cycle
             Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin();
             double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
             double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
-            stream << x << " " << y;
+            stream << x << " " << 6000 - y;
 
             stream << endl;
         }
@@ -79,14 +79,14 @@ void XfigFileGenerator::drawPolygon(CustomPolygon polygon) {
             double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
             double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
 
-            stream << x << " " << y << " ";
+            stream << x << " " << 6000 - y << " ";
         }
 
         //Append initial point to complete cycle
         Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin();
         double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
         double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
-        stream << x << " " << y;
+        stream << x << " " << 6000 - y;
 
         stream << endl;
 
@@ -106,10 +106,10 @@ void XfigFileGenerator::drawLines(QList<CustomPoint> vertices) {
         for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
             stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2" << endl;
             //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
-            stream << (int) CGAL::to_double((*vertexIterator).x())  * this->magnification << " " << (int) CGAL::to_double((*vertexIterator).y()) * this->magnification << " ";
+            stream << (int) CGAL::to_double((*vertexIterator).x())  * this->magnification << " " << 6000 - (int) CGAL::to_double((*vertexIterator).y()) * this->magnification << " ";
             vertexIterator++;
             //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
-            stream << (int) CGAL::to_double((*vertexIterator).x()) * this->magnification << " " << (int) CGAL::to_double((*vertexIterator).y()) * this->magnification;
+            stream << (int) CGAL::to_double((*vertexIterator).x()) * this->magnification << " " << 6000 - (int) CGAL::to_double((*vertexIterator).y()) * this->magnification;
             stream << endl;
         }
 
