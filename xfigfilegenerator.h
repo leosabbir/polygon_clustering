@@ -12,7 +12,7 @@ public:
     void initialize(QString filePath);
     void drawPolygons(QList<CustomPolygon> polygons);
     void drawPolygon(CustomPolygon polygon);
-    void drawLines(QList<CustomPoint> vertices);
+    void drawLines(QList<CustomPoint> vertices, bool drawDashed);
 
 private:
     QString *currentFile;

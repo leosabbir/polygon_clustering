@@ -26,7 +26,7 @@ void XfigFileGenerator::initialize(QString filePath) {
         stream << "Single" << endl;
         stream << "-2" << endl;
         stream << "1200 2" << endl;
-        //stream << x << " " << y << " ";
+        stream << "0 34 #cccccc" << endl;
         //stream << endl;
         stream.flush();
         outputFile->close();
@@ -43,7 +43,7 @@ void XfigFileGenerator::drawPolygons(QList<CustomPolygon> polygons) {
         QTextStream stream( outputFile );
 
         for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
-            stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 " << (*polygonIterator).size() + 1 << endl;
+            stream << "2 3 0 1 0 34 50 -1 20 0.000 0 0 -1 0 0 " << (*polygonIterator).size() + 1 << endl;
             for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
                 double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
                 double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
@@ -74,7 +74,7 @@ void XfigFileGenerator::drawPolygon(CustomPolygon polygon) {
         QList<CustomPolygon>::iterator polygonIterator;
         QTextStream stream( outputFile );
 
-        stream << "2 3 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 " << polygon.size() + 1 << endl;
+        stream << "2 3 0 1 0 34 50 -1 20 0.000 0 0 -1 0 0 " << polygon.size() + 1 << endl;
         for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
             double x = CGAL::to_double((*vertexIterator).x()) * this->magnification;
             double y = CGAL::to_double((*vertexIterator).y()) * this->magnification;
@@ -97,14 +97,18 @@ void XfigFileGenerator::drawPolygon(CustomPolygon polygon) {
     }
 }
 
-void XfigFileGenerator::drawLines(QList<CustomPoint> vertices) {
+void XfigFileGenerator::drawLines(QList<CustomPoint> vertices, bool drawDashed) {
     QFile *outputFile = new QFile(*(this->currentFile));
 
     if ( outputFile->open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text) ) {
         QTextStream stream( outputFile );
 
         for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
-            stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2" << endl;
+            if (drawDashed) {
+                stream << "2 1 1 1 0 7 50 -1 -1 4.000 0 0 7 0 0 2" << endl;
+            } else {
+                stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2" << endl;
+            }
             //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
             stream << (int) CGAL::to_double((*vertexIterator).x())  * this->magnification << " " << 6000 - (int) CGAL::to_double((*vertexIterator).y()) * this->magnification << " ";
             vertexIterator++;

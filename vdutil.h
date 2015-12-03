@@ -24,9 +24,11 @@ public:
     //void printEndPoint(Halfedge_handle e, bool isSrc);
     void construct(QList<PointToCluster> vertices, bool constructWithoutIntersectingEdges);
     QList<CustomPoint> getVoronoiLineSegments();
+    QList<CustomPoint> getIntersectingVoronoiLineSegments();
 
 private:
     QList<CustomPoint>* voronoiLineSegments;
+    QList<CustomPoint>* intersectingVoronoiLineSegments;
     bool doesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4);
 };
 

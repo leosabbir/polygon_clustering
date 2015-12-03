@@ -28,13 +28,16 @@ struct Cropped_voronoi_from_delaunay{
 
 VDUtil::VDUtil() {
     voronoiLineSegments = NULL;
+    intersectingVoronoiLineSegments = NULL;
 }
 
 void VDUtil::construct(QList<PointToCluster> vertices, bool constructWithoutIntersectingEdges) {
     if (voronoiLineSegments == NULL) {
         this->voronoiLineSegments = new QList<CustomPoint>();
+        this->intersectingVoronoiLineSegments  = new QList<CustomPoint>();
     } else {
         this->voronoiLineSegments->clear();
+        this->intersectingVoronoiLineSegments->clear();
     }
 
     Delaunay_triangulation_2 dt2;
@@ -63,6 +66,10 @@ void VDUtil::construct(QList<PointToCluster> vertices, bool constructWithoutInte
           double x2 = (*iterator).target().x();
           double y2 = (*iterator).target().y();
 
+          //correct nan
+          if (x1 != x1 || x2 != x2 || y1 == !y1 || y2 == !y2) {
+              continue;
+          }
           CustomPoint *p = new CustomPoint(x1, y1);
           CustomPoint *q = new CustomPoint(x2, y2);
 
@@ -103,6 +110,9 @@ void VDUtil::construct(QList<PointToCluster> vertices, bool constructWithoutInte
               if ( !intersects ) {
                   this->voronoiLineSegments->append(*p);
                   this->voronoiLineSegments->append(*q);
+              } else {
+                  this->intersectingVoronoiLineSegments->append(*p);
+                  this->intersectingVoronoiLineSegments->append(*q);
               }
             //qDebug() << (*iterator).target().x() << " : " << (*iterator).target().y();
           } else {
@@ -146,4 +156,8 @@ bool VDUtil::doesIntersect(double x1, double y1, double x2, double y2, double x3
 
 QList<CustomPoint> VDUtil::getVoronoiLineSegments() {
     return *(this->voronoiLineSegments);
+}
+
+QList<CustomPoint> VDUtil::getIntersectingVoronoiLineSegments() {
+    return *(this->intersectingVoronoiLineSegments);
 }

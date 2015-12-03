@@ -142,6 +142,23 @@ void GLWidget::paintGL() {
             //qDebug() << "Target: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
         }
         glEnd();
+
+        glPushAttrib(GL_ENABLE_BIT);
+        glLineWidth(1.0);
+        glLineStipple(2, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+        glBegin(GL_LINES);
+        glColor3f(1, 1, 0);
+        QList<CustomPoint> intersectingVoronoiLineSegments = vdUtil.getIntersectingVoronoiLineSegments();
+        for ( QList<CustomPoint>::iterator vertexIterator = intersectingVoronoiLineSegments.begin(); vertexIterator != intersectingVoronoiLineSegments.end(); vertexIterator++) {
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+            //qDebug() << "Source: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
+            vertexIterator++;
+            glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
+            //qDebug() << "Target: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
+        }
+        glEnd();
+        glPopAttrib();
     }
     /***End Draw Voronoi Diagram*****/
 
@@ -208,7 +225,11 @@ void GLWidget::generateXfigFile(QString filepath) {
         vdUtil.construct(*polygonsPoints, !Context::getInstance()->isDrawOnlyNonIntersectingVoronoiEdges());
         QList<CustomPoint> voronoiLineSegments = vdUtil.getVoronoiLineSegments();
 
-        fileGenerator.drawLines(voronoiLineSegments);
+        fileGenerator.drawLines(voronoiLineSegments, false);
+        if (!Context::getInstance()->isDrawOnlyNonIntersectingVoronoiEdges()) {
+            QList<CustomPoint> intersectingVoronoiLineSegments = vdUtil.getIntersectingVoronoiLineSegments();
+            fileGenerator.drawLines(intersectingVoronoiLineSegments, true);
+        }
     }
     /***End Draw Voronoi Diagram*****/
 
