@@ -27,6 +27,7 @@ void GLWidget::initiallizeGL(){
 }
 
 void GLWidget::paintGL() {
+    glClearColor(0.82, 0.82, 0.82, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     double width = Constants::WIDTH = size().width();
@@ -41,13 +42,14 @@ void GLWidget::paintGL() {
         QList<CustomPolygon>::iterator polygonIterator;
         QList<CustomPolygon> polygons = Context::getInstance()->getFileReader().constructPolygons();
         for ( polygonIterator = polygons.begin(); polygonIterator != polygons.end() ; polygonIterator++) {
-            glLineWidth(.5);
+            glLineWidth(2.0);
             glBegin(GL_LINE_LOOP);
             bool isSelectedPolygon = i++ == Context::getInstance()->getSelectedPolygon();
             if (isSelectedPolygon) {
                 glColor3f(0, 0, 1);
             } else {
-                glColor3f(1, 0, 0);
+                //glColor3f(0.58, 0.157, 0.157);
+                glColor3f(0, 0, 0);
             }
 
             for ( Vertex_iterator vertexIterator = (*polygonIterator).vertices_begin(); vertexIterator != (*polygonIterator).vertices_end(); vertexIterator++) {
@@ -55,7 +57,7 @@ void GLWidget::paintGL() {
             }
             glEnd();
             if (isSelectedPolygon) {
-                glColor3f(1, 1, 1);
+                glColor3f(0, 0, 0);
                 glEnable(GL_POINT_SMOOTH);
                 glPointSize(3.0);
                 glBegin(GL_POINTS);
@@ -71,7 +73,7 @@ void GLWidget::paintGL() {
 
     /*** Draw vertices of new polygon ****/
     if (Context::getInstance()->getEditMode() == Constants::CREATE_POLYGONS_MODE && this->newPolygon != NULL) {
-        glColor3f(1, 1, 1);
+        glColor3f(0, 0, 0);
         glEnable(GL_POINT_SMOOTH);
         glPointSize(1.0);
         glBegin(GL_POINTS);
@@ -96,7 +98,7 @@ void GLWidget::paintGL() {
             int index = (*pointsIterator).getClusterIndex();
             switch (index) {
                 case 0:
-                    glColor3f(1, 1, 1);
+                    glColor3f(0, 0, 0);
                     break;
                 case 1:
                     glColor3f(0, 1, 0);
@@ -131,9 +133,10 @@ void GLWidget::paintGL() {
         vdUtil.construct(*polygonsPoints, !Context::getInstance()->isDrawOnlyNonIntersectingVoronoiEdges());
         QList<CustomPoint> voronoiLineSegments = vdUtil.getVoronoiLineSegments();
 
-        glLineWidth(1.0);
+        glLineWidth(2.0);
         glBegin(GL_LINES);
-        glColor3f(1, 1, 0);
+        //glColor3f(1, 1, 0);
+        glColor3f(0.58, 0.157, 0.157);
         for ( QList<CustomPoint>::iterator vertexIterator = voronoiLineSegments.begin(); vertexIterator != voronoiLineSegments.end(); vertexIterator++) {
             glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
             //qDebug() << "Source: " << CGAL::to_double((*vertexIterator).x()) << ", " << CGAL::to_double((*vertexIterator).y());
@@ -144,11 +147,12 @@ void GLWidget::paintGL() {
         glEnd();
 
         glPushAttrib(GL_ENABLE_BIT);
-        glLineWidth(1.0);
+        glLineWidth(2.0);
         glLineStipple(2, 0xAAAA);
         glEnable(GL_LINE_STIPPLE);
         glBegin(GL_LINES);
-        glColor3f(1, 1, 0);
+        //glColor3f(1, 1, 0);
+        glColor3f(0.58, 0.157, 0.157);
         QList<CustomPoint> intersectingVoronoiLineSegments = vdUtil.getIntersectingVoronoiLineSegments();
         for ( QList<CustomPoint>::iterator vertexIterator = intersectingVoronoiLineSegments.begin(); vertexIterator != intersectingVoronoiLineSegments.end(); vertexIterator++) {
             glVertex2d(transformX(CGAL::to_double((*vertexIterator).x()), width), transformY(CGAL::to_double((*vertexIterator).y()), height));
@@ -166,8 +170,9 @@ void GLWidget::paintGL() {
     if (Context::getInstance()->isDrawConnectingLines()) {
         std::vector<std::vector<PointForConvexHull> > results;
         Context::getInstance()->getConvexHullComputationalUtil()->compute(Context::getInstance()->getFileReader().constructPolygons(), results);
-        glColor3f(0, 1, 0);
-        glLineWidth(1);
+        //glColor3f(0.051, 0.369, 0.031);
+        glColor3f(0.58, 0.157, 0.157);
+        glLineWidth(2.0);
         QList<CustomeLine>::iterator linesIterator;
         QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
         //std::cout << connectingLines.size() << " lines in the list" << std::endl;
@@ -186,14 +191,14 @@ void GLWidget::paintGL() {
 
         for (std::vector<vector<PointForConvexHull> >::iterator it = results.begin(); it != results.end(); ++it) {
             //qDebug() << "SIZE " << (*it).size();
-            glColor3f(0, 1, 1);
+            glColor3f(0.03, 0.392, 0.392);
             glBegin(GL_LINE_LOOP);
             for (std::vector<PointForConvexHull>::iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2) {
                 double x = (*it2).x();
                 double y = (*it2).y();
                 //qDebug() << x << " " << y;//(*it).size();
                 //glVertex2d(transformX(x, width), transformY(y, height));
-                glVertex2d(x, y);
+                //glVertex2d(x, y);
             }
             glEnd();
         }
@@ -218,6 +223,40 @@ void GLWidget::generateXfigFile(QString filepath) {
 //            glVertex2d(transformX(CGAL::to_double((*pointsIterator).x()), width), transformY(CGAL::to_double((*pointsIterator).y()), height));
 //        }
 //    }
+
+
+    if (Context::getInstance()->isDrawConnectingLines()) {
+        std::vector<std::vector<PointForConvexHull> > results;
+        Context::getInstance()->getConvexHullComputationalUtil()->compute(Context::getInstance()->getFileReader().constructPolygons(), results);
+
+        QList<CustomeLine>::iterator linesIterator;
+        QList<CustomeLine> connectingLines = Context::getInstance()->getConnectingLines();
+
+        for (linesIterator = connectingLines.begin(); linesIterator != connectingLines.end(); linesIterator++) {
+            CustomeLine line = *linesIterator;
+            double x1 = CGAL::to_double(line.getQ().x());
+            double y1 = CGAL::to_double(line.getQ().y());
+
+            //glVertex2d(transformX(x, width), transformY(y, height));
+
+            double x2 = CGAL::to_double(line.getP().x());
+            double y2 = CGAL::to_double(line.getP().y());
+            //glVertex2d(transformX(x, width), transformY(y, height));
+
+            fileGenerator.drawLine(x1, y1, x2, y2, false);
+        }
+
+//        for (std::vector<vector<PointForConvexHull> >::iterator it = results.begin(); it != results.end(); ++it) {
+//            glColor3f(0, 1, 1);
+//            glBegin(GL_LINE_LOOP);
+//            for (std::vector<PointForConvexHull>::iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2) {
+//                double x = (*it2).x();
+//                double y = (*it2).y();
+
+//                glVertex2d(x, y);
+//            }
+//        }
+    }
 
     /***Draw Voronoi Diagram*****/
     if (Context::getInstance()->isVerticesEnabled() && Context::getInstance()->isDrawVoronoi()) {

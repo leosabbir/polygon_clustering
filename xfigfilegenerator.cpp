@@ -123,3 +123,30 @@ void XfigFileGenerator::drawLines(QList<CustomPoint> vertices, bool drawDashed) 
         qDebug() << "Error Opening the XFig file: " << *(this->currentFile);
     }
 }
+
+void XfigFileGenerator::drawLine(double x1, double y1, double x2, double y2, bool drawDashed) {
+    QFile *outputFile = new QFile(*(this->currentFile));
+
+    if ( outputFile->open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text) ) {
+        QTextStream stream( outputFile );
+
+        //for ( QList<CustomPoint>::iterator vertexIterator = vertices.begin(); vertexIterator != vertices.end(); vertexIterator++) {
+            if (drawDashed) {
+                stream << "2 1 1 1 0 7 50 -1 -1 4.000 0 0 7 0 0 2" << endl;
+            } else {
+                stream << "2 1 0 1 0 7 50 -1 -1 0.000 0 0 -1 0 0 2" << endl;
+            }
+            //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            stream << (int) x1  * this->magnification << " " << 6000 - (int) y1 * this->magnification << " ";
+            //vertexIterator++;
+            //stream << Utils::transform(CGAL::to_double((*vertexIterator).x()), Constants::WIDTH) << Utils::transform(CGAL::to_double((*vertexIterator).y()), Constants::HEIGHT);
+            stream << (int) x2 * this->magnification << " " << 6000 - (int) y2 * this->magnification;
+            stream << endl;
+        //}
+
+        stream.flush();
+        outputFile->close();
+    } else {
+        qDebug() << "Error Opening the XFig file: " << *(this->currentFile);
+    }
+}

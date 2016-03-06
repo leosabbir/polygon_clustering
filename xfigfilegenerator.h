@@ -13,6 +13,7 @@ public:
     void drawPolygons(QList<CustomPolygon> polygons);
     void drawPolygon(CustomPolygon polygon);
     void drawLines(QList<CustomPoint> vertices, bool drawDashed);
+    void drawLine(double x1, double y1, double x2, double y2, bool drawDashed);
 
 private:
     QString *currentFile;
