@@ -13,14 +13,14 @@ CustomPolygon::CustomPolygon() {
 
 }
 
-void CustomPolygon::addConnectingPolygon(int polygonIndex, CustomeLine line) {
-    this->connectedPolygons.append(polygonIndex);
-    this->connectingLines.append(line);
-}
+//void CustomPolygon::addConnectingPolygon(int polygonIndex, CustomeLine line) {
+//    this->connectedPolygons.append(polygonIndex);
+//    this->connectingLines.append(line);
+//}
 
-bool CustomPolygon::hasConnectingPolygons() {
-    return this->connectedPolygons.size() > 0;
-}
+//bool CustomPolygon::hasConnectingPolygons() {
+//    return this->connectedPolygons.size() > 0;
+//}
 
 CustomPoint* CustomPolygon::getVertices() const {
     int i = 0;

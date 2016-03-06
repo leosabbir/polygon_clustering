@@ -28,8 +28,8 @@ class CustomPolygon : public Polygon {
 
 public:
     CustomPolygon();
-    void addConnectingPolygon(int polygonIndex, CustomeLine line);
-    bool hasConnectingPolygons();
+    //void addConnectingPolygon(int polygonIndex, CustomeLine line);
+    //bool hasConnectingPolygons();
     CustomeLine* computeDistance(CustomPolygon p) const;
     bool doIntersect(CustomPolygon p) const;
     CustomPoint* getVertices() const;
@@ -37,8 +37,8 @@ public:
     bool isSelected;
 
 private:
-    QList<int> connectedPolygons;
-    QList<CustomeLine> connectingLines;
+    //QList<int> connectedPolygons;
+    //QList<CustomeLine> connectingLines;
 };
 
 #endif // CUSTOMPOLYGON_H
