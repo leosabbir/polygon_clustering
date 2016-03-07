@@ -21,7 +21,7 @@ Context::Context()
     this->drawConnectingLines = false;
     this->borderEnabled = true;
     this->verticesEnabled = false;
-    this->drawVoronoi = true; //set it to FALSE for k-means clustering
+    this->drawVoronoi = false; //set it to FALSE for k-means clustering
     this->drawOnlyNonIntersectingVoronoiEdges = false;
 }
 

@@ -20,6 +20,13 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::initializeEditModes() {
+    this->ui->algoMode->addItem("Add Polygon");
+    this->ui->algoMode->addItem("Nearest Neighbour");
+    this->ui->algoMode->addItem("K-means");
+    this->ui->algoMode->addItem("Voronoi");
+    this->ui->algoMode->setCurrentIndex(0);
+    this->adaptSelectedAlgorithmMode(0);
+
     this->ui->editModeComboBox->addItem("Normal");
     this->ui->editModeComboBox->addItem("Edit");
     this->ui->editModeComboBox->addItem("Add Vertex");
@@ -29,6 +36,73 @@ void MainWindow::initializeEditModes() {
     this->ui->editModeComboBox->setCurrentIndex(0);
 }
 
+
+void MainWindow::adaptSelectedAlgorithmMode(int index) {
+    switch(index) {
+        case 0: // create polygons
+            this->ui->createBtn->setVisible(true);
+            this->ui->editModeComboBox->setVisible(true);
+            this->ui->editModeLbl->setVisible(true);
+
+            this->ui->thresholdTtle->setVisible(false);
+            this->ui->threshHoldLbl->setVisible(false);
+            this->ui->thresholdSlider->setVisible(false);
+            this->ui->applyBtn->setVisible(false);
+
+            this->ui->borderChkBox->setVisible(false);
+            this->ui->verticesChkBox->setVisible(false);
+            this->ui->showAllEdgesChkBox->setVisible(false);
+
+            return;
+        case 1: // apply nearest neighbour
+            this->ui->createBtn->setVisible(false);
+            this->ui->editModeComboBox->setVisible(false);
+            this->ui->editModeLbl->setVisible(false);
+
+            this->ui->thresholdTtle->setVisible(true);
+            this->ui->threshHoldLbl->setVisible(true);
+            this->ui->thresholdSlider->setVisible(true);
+            this->ui->applyBtn->setVisible(true);
+
+            this->ui->borderChkBox->setVisible(false);
+            this->ui->verticesChkBox->setVisible(false);
+            this->ui->showAllEdgesChkBox->setVisible(false);
+            return;
+        case 2: // apply k-means
+            this->ui->createBtn->setVisible(false);
+            this->ui->editModeComboBox->setVisible(false);
+            this->ui->editModeLbl->setVisible(false);
+
+            this->ui->thresholdTtle->setVisible(false);
+            this->ui->threshHoldLbl->setVisible(false);
+            this->ui->thresholdSlider->setVisible(false);
+            this->ui->applyBtn->setVisible(false);
+
+            this->ui->borderChkBox->setVisible(true);
+            this->ui->verticesChkBox->setVisible(true);
+            this->ui->showAllEdgesChkBox->setVisible(false);
+
+            Context::getInstance()->setDrawVoronoi(false);
+            return;
+        default: // apply voronoi
+            this->ui->createBtn->setVisible(false);
+            this->ui->editModeComboBox->setVisible(false);
+            this->ui->editModeLbl->setVisible(false);
+
+            this->ui->thresholdTtle->setVisible(false);
+            this->ui->threshHoldLbl->setVisible(false);
+            this->ui->thresholdSlider->setVisible(false);
+            this->ui->applyBtn->setVisible(false);
+
+            this->ui->borderChkBox->setVisible(true);
+            this->ui->verticesChkBox->setVisible(true);
+            this->ui->showAllEdgesChkBox->setVisible(true);
+
+            Context::getInstance()->setDrawVoronoi(true);
+            return;
+    }
+
+}
 
 void MainWindow::on_thresholdSlider_sliderMoved(int position) {
     ui->threshHoldLbl->setText(QString::number(position));
@@ -119,8 +193,11 @@ void MainWindow::on_borderChkBox_released() {
 void MainWindow::on_verticesChkBox_released() {
     Context::getInstance()->setVerticesEnabled(this->ui->verticesChkBox->checkState() == Qt::Checked);
     if (!Context::getInstance()->isVerticesEnabled()) {
+        this->ui->showAllEdgesChkBox->setChecked(false);
         this->ui->showAllEdgesChkBox->setEnabled(false);
     } else {
+        Context::getInstance()->setDrawOnlyNonIntersectingVoronoiEdges(true);
+        this->ui->showAllEdgesChkBox->setChecked(true);
         this->ui->showAllEdgesChkBox->setEnabled(true);
     }
     this->ui->maincontainer->paintGL();
@@ -141,4 +218,18 @@ void MainWindow::on_xfigFileBtn_released() {
         return;
     }
     this->ui->maincontainer->generateXfigFile(fileName);
+}
+
+void MainWindow::on_algoMode_currentIndexChanged(int index) {
+    Context::getInstance()->setDrawConnectingLines(false);
+
+    this->ui->borderChkBox->setChecked(true);
+    Context::getInstance()->setBorderEnabled(true);
+    this->ui->verticesChkBox->setChecked(false);
+    Context::getInstance()->setVerticesEnabled(false);
+    this->ui->showAllEdgesChkBox->setChecked(false);
+
+    this->adaptSelectedAlgorithmMode(index);
+    this->ui->maincontainer->paintGL();
+    this->ui->maincontainer->update();
 }

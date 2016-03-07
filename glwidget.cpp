@@ -198,7 +198,7 @@ void GLWidget::paintGL() {
                 double y = (*it2).y();
                 //qDebug() << x << " " << y;//(*it).size();
                 //glVertex2d(transformX(x, width), transformY(y, height));
-                //glVertex2d(x, y);
+                glVertex2d(x, y);
             }
             glEnd();
         }

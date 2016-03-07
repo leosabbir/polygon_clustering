@@ -20,6 +20,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void initializeEditModes();
+    void adaptSelectedAlgorithmMode(int index);
 
 private slots:
     void on_thresholdSlider_sliderMoved(int position);
@@ -51,6 +52,8 @@ private slots:
     void on_showAllEdgesChkBox_released();
 
     void on_xfigFileBtn_released();
+
+    void on_algoMode_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
